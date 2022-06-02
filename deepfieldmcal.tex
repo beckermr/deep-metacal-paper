@@ -104,14 +104,14 @@ introduced \mdet technique promises to reach part-per-thousand accuracy even in 
 presence of object detection and blending \citep{SheldonMdet2022}, but much work
 remains to fully realize the potential of this technique in realistic survey scenarios.
 
-Despite their success, the \mcal and \mdet techniques as currently implemented have a
-nontrivial drawback. In order to reach the required accuracy in shear measurement, they
-effectively double the pixel noise variance in the survey images or equivalently reduce
-the signal-to-noise of every source by approximately a factor of
-$1/\sqrt{2}\approx30\%$. As described below, this effect comes from a numerical
-correction needed to account for sheared pixel noise in the \mcal pipeline. This feature
-results in a loss of precision in the final cosmological analysis since the survey
-effectively becomes shallower than it would have been.
+Despite their success, the \mcal and \mdet techniques as currently implemented
+have a nontrivial drawback. In order to reach the required accuracy in shear
+measurement, they effectively double the pixel noise variance in the survey
+images or equivalently reduce the signal-to-noise of every source by
+approximately a factor of $1/\sqrt{2}\approx30\%$. As described below, this
+effect comes from a numerical correction needed to account for sheared pixel
+noise in the \mcal pipeline. This feature results in a loss of precision in the
+final cosmological analysis at the $\sim 20\%$ level \citep{SheldonMcal2017}.
 
 Interestingly, modern surveys typically have a wide-field imaging campaign, which forms
 the survey used for weak lensing shear measurements, and a deep-field imaging campaign,
@@ -123,9 +123,10 @@ does not take advantage of deep-field data, the BFD estimator explicitly uses it
 avoiding increases in the wide-field image pixel noise in the analysis.
 
 In this work, we propose a new technique, \textit{deep-field \textsc{metacalibration}},
-which largely eliminates this loss in signal-to-noise by taking advantage of the
-deep-field survey to calibrate the \mcal estimator. The \mcal shear estimator has two
-components, the uncalibrated shape measurements, $\langle \mathbf{g} \rangle$, and the
+which greatly reduces noise degradation by taking advantage of a
+deep-field survey to derive calibrations. The standard \mcal estimator for
+a mean shear has two
+components, the uncalibrated shape measurements $\langle \mathbf{g} \rangle$ and the
 mean \mcal response matrix $\langle\mathbf{R}\rangle$, both of which are computed from
 the wide-field survey data. These quantities are combined to form the final shear
 estimate as
@@ -147,11 +148,13 @@ increase the signal-to-noise of \mcal weak lensing sources and decreasing their 
 The exact change in the pixel noise depends in detail on the relative depth and PSF
 distributions of the wide- and deep-field surveys. We further estimate an at least
 $\approx15\%$ increase in the statistical precision of weak lensing analyses with
-Rubin LSST due to the decreased pixel noise, with significant uncertainties due to the
-somewhat unknown area, depth, and PSF properties of the LSST DDFs.
+Rubin LSST due to the decreased pixel noise. We conservatively estimate that the
+uncertainty in the shear estimator
+is degraded by $<5\%$ rather than the approximately 20\% degradation in
+standard \mcal.
 
 The primary concern when utilizing only the deep-field data to compute the \mcal
-response is sample variance. The deep-field survey is typical taken of a much smaller
+response is sample variance. The deep-field survey typically covers a much smaller
 area of the sky than the wide-field survey. The \mcal response depends on the properties
 of the galaxies from which it is computed (e.g., their profiles, sizes, etc.) and so
 will inherit sample variance in those properties due to large-scale structure. We
@@ -971,8 +974,8 @@ conclusions are:
   \item When applied to the Rubin LSST, we expect an at least $\approx15\%$ increase in
     the precision of weak lensing analyses due to the decreased pixel noise contributions
     to the shape noise and increased effective source density.  We conservatively
-    estimate that the degradation in the precision of statistical shear measurements
-    is reduced from 20\% for \mcal to $<5\%$ for deep-field \mcal.
+    estimate that the corresponding degradation in the precision of statistical
+    shear measurements is reduced from 20\% for \mcal to $<5\%$ for deep-field \mcal.
   \item The LSST DDFs will have enough area to suppress the effects of sample variance
     in the deep-fields to levels that will meet LSST requirements
     (Section~\ref{sec:sv}).
