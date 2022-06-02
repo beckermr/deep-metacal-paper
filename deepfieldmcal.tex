@@ -838,11 +838,13 @@ the error on the mean shear which is dictated by the same combination shape nois
 effective number density that enters the cosmic shear covariance matrix (i.e.
 $\sqrt{\sigma_e^2/n}$ where $\sigma_e^2$ is the shape noise and $n$ is the number density
 of sources). We find that deep-field \mcal achieves an $\approx15\%$ smaller
-error on the mean shear relative to standard \mcal. This estimate roughly matches the
-results of \citet{SheldonMcal2017} who found that the increased pixel noise in standard
-\mcal resulted in an overall decrease of $\approx20$ in the precision of the weak
-lensing survey. Our estimate is a rough lower bound on the increase in precision due to
-deep-field \mcal. In more realistic scenarios, we may be able to use more of the DDF
+error on the mean shear relative to standard \mcal.  Note that
+\citet{SheldonMcal2017} found that the increased pixel noise in standard
+\mcal resulted in an resulted in a $\approx 20\%$ degradation in the precision of 
+statistical weak lensing measurements.  Our results thus suggest that the degradation
+is reduced to a few percent with deep-field \mcal.  As our simulations do
+not contain perfect realism, we conservatively estimate the degradation for deep-field
+\mcal is $<5\%$.  In more realistic scenarios, we may be able to use more of the DDF
 data resulting in better performance. We defer more detailed estimates to future work.
 
 \subsection{Relative Importance of Different Correction Terms}\label{sec:terms}
@@ -968,7 +970,9 @@ conclusions are:
     the wide- and deep-field depth and PSF distributions (Section~\ref{sec:sizedepth}).
   \item When applied to the Rubin LSST, we expect an at least $\approx15\%$ increase in
     the precision of weak lensing analyses due to the decreased pixel noise contributions
-    to the shape noise and increased effective source density.
+    to the shape noise and increased effective source density.  We conservatively
+    estimate that the degradation in the precision of statistical shear measurements
+    is reduced from 20\% for \mcal to $<5\%$ for deep-field \mcal.
   \item The LSST DDFs will have enough area to suppress the effects of sample variance
     in the deep-fields to levels that will meet LSST requirements
     (Section~\ref{sec:sv}).
