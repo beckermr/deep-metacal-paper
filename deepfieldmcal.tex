@@ -42,35 +42,42 @@
 
 
 \begin{abstract}
-We introduce \textit{deep-field \textsc{metacalibration}}, a new technique that reduces
-the pixel noise in \mcal estimators of weak lensing shear signals by taking advantage of
-a smaller, deeper imaging survey for calibration. Standard \mcal estimators of weak
-lensing shear signals apply small artificial shears to the observed images of galaxies
-in order to estimate the response of the object's shape to shear. This response is
-combined with an uncalibrated shape measurement to produce properly calibrated shear
-measurements. Unfortunately, current standard \mcal algorithms for weak lensing shear
-measurement double the pixel noise variance in the images due to a numerical correction
-needed during the artificial shearing process. Our new deep-field \mcal technique
-leverages a separate, deeper imaging survey to avoid this increase in the pixel noise. We
-provide algorithms to apply this technique to surveys, describe how to generalize it to
-shear estimators that rely explicitly on object detection (e.g., \mdet), and
-demonstrate that weak lensing shear measurement with deep-field \mcal is unbiased up to
-second-order shear effects. We further show that for a typical lensing source,
-deep-field \mcal will decrease \mcal image pixel noise by up to $\approx30\%$, resulting
-in corresponding increases in the signal-to-noise of these sources and reductions in
-shape  measurement errors. The overall increase in the precision of weak lensing
-measurements for the Rubin LSST will depend on the somewhat unknown details of the LSST
-Deep Drilling Field observations in terms of area and depth, the relative point-spread
-function properties of the DDF and main LSST surveys, and the relative contribution of
-pixel noise versus intrinsic shape noise to the total shape noise in the survey. We
-estimate conservatively at least a $\approx15\%$ overall increase in the precision of
-weak lensing analyses due to the increased source density and reduced pixel noise
-contributions to the overall shape noise. Finally, we show that the technique is robust
-to sample variance in the Vera C. Rubin Observatory Legacy Survey of Space and Time
-(LSST) Deep Drilling Fields (DDFs) due to their large area, with the equivalent
-calibration error being $\lesssim0.1\%$. The deep-field \mcal technique provides higher
-signal-to-noise weak lensing measurements while still meeting the stringent systematic
-error requirements of future surveys.
+
+    We introduce \textit{deep-field \textsc{metacalibration}}, a new technique
+    that reduces the pixel noise in \mcal estimators of weak lensing shear
+    signals by taking advantage of a smaller, deeper imaging survey for
+    calibration. In standard \mcal, a small artificial shear is applied to the
+    observed images of galaxies in order to estimate the response of the
+    object's shape to shear, which is used to calibrate the shear estimates.
+    As part of a correction for the effect of shearing the noise, extra noise
+    is added to the images that increases the uncertainty on statistical shear
+    estimates by $\sim 20$\%.  Our new deep-field \mcal technique leverages a
+    separate, deeper imaging survey to calculate calibrations with less
+    degradation in image noise.  We demonstrate that weak lensing shear
+    measurement with deep-field \mcal is unbiased up to second-order shear
+    effects.  We provide algorithms to apply this technique to imaging surveys,
+    and describe how to generalize it to shear estimators that rely explicitly
+    on object detection (e.g., \mdet).   For the Vera C. Rubin Observatory
+    Legacy Survey of Space and Time (LSST), the improvement in weak lensing
+    precision will depend on the somewhat unknown details of the LSST Deep
+    Drilling Field (DDF) observations in terms of area and depth, the relative
+    point-spread function properties of the DDF and main LSST surveys, and the
+    relative contribution of pixel noise versus intrinsic shape noise to the
+    total shape noise in the survey. We conservatively estimate that the
+    degradation in precision is reduced from 20\% for \mcal to $<5$\% for
+    deep-field \mcal, which we attribute primarily to to the increased source
+    density and reduced pixel noise contributions to the overall shape noise.
+    Finally, we show that the technique is robust to sample variance in the
+    LSST deep fields due to their large area, with the equivalent calibration
+    error being $\lesssim0.1\%$. The deep-field \mcal technique provides higher
+    signal-to-noise weak lensing measurements while still meeting the stringent
+    systematic error requirements of future surveys.
+
+% We further show that for a typical lensing source,
+% deep-field \mcal will decrease \mcal image pixel noise by up to $\approx30\%$, resulting
+% in corresponding increases in the signal-to-noise of these sources and reductions in
+% measurement errors.
+
 \end{abstract}
 
 
