@@ -190,10 +190,10 @@ operation of two images as $I_1 \star I_2$, deconvolution as $I_1/I_2$,
 and pointwise addition or subtraction as $I_1\pm I_2$. We also define two special
 operators on images. First, we define a shearing operator $Y[I, \gamma]$ that shears
 the image $I$ by the shear $\gamma$. Second, we define a \mcal operator,
-$M[I, N, P, P_r]$, defined as
-\begin{eqnarray}
+$M[I, N, P, P_r]$, defined as \ess{should we move this to the later section?}
+\begin{eqnarray} \label{eq:mcalop}
 \lefteqn{M[I, N, P, P_r, \gamma]=} & & \\\nonumber
-& &\ \ Y[I/P, \gamma] \star P_r + Y[N/P, -\gamma] \star P_r \nonumber
+& &\ \ Y[I/P, \gamma] \star P_r + Y[N/P, -\gamma] \star P_r
 \end{eqnarray}
 where $I$ is an image, $N$ is a second image (usually pure noise), $P$ is the image PSF,
 $P_r$ is the \mcal reconvolution PSF, and $\gamma$ is a shear. This operator performs
@@ -212,14 +212,14 @@ coadds around each object \citep{psc} or for \mdet, by using coadds without PSF
 discontinuities \citep{BeckerMdet2022,SheldonMdet2022}. These data products
 have well defined PSFs, and the coadd noise properties can be determined by
 running pure noise images through the coaddition process. The algorithms below
-thus multi-epoch scenarios.
+generalize to these multi-epoch scenarios.
 
 \subsection{Standard \mcal}
 
 The standard \mcal estimator is based on a linear expansion of the shape of an object,
 $\mathbf{e}$, in the true $\gamma$,
 \begin{eqnarray}
-\mathbf{e} & \approx & \left. \mathbf{e} \right|_{\gamma=0}
+\mathbf{e} & = & \left. \mathbf{e} \right|_{\gamma=0}
 + \left.\frac{\partial\mathbf{e}}{\partial\gamma}\right|_{\gamma=0} \gamma
 + {\cal O}(\gamma^2)\nonumber\\
 & \equiv & \left. \mathbf{e} \right|_{\gamma=0}
@@ -233,26 +233,23 @@ R_{ij} \equiv \left.\frac{\partial e_i}{\partial\gamma_j}\right|_{\gamma_j=0}\ .
 Under the assumption that the intrinsic shapes of objects average to zero,
 $\langle \left. \mathbf{e} \right|_{\gamma=0} \rangle = 0$, then we get to linear order
 \begin{equation*}
-\langle\mathbf{e}\rangle = \langle \mathbf{R} \rangle \langle\gamma\rangle
+\langle\mathbf{e}\rangle \approx \langle \mathbf{R} \gamma\rangle,
 \end{equation*}
-where we have assumed that the response matrix is uncorrelated with the true shear.
-\mcal forms a shear estimate by computing the average of the response matrix
-$\langle\mathbf{R}\rangle$ from the data itself. This average combined with the average
-mean shape $\langle \mathbf{e}\rangle$ can be used to define an estimate of the mean
-shear as
+% \langle\mathbf{e}\rangle = \langle \mathbf{R} \rangle \langle\gamma\rangle
+which demonstrates that true shear is weighted by the response
+in the mean ellipticity.  We can then calculate the response weighted mean shear
 \begin{equation*}
-\hat\gamma \equiv \langle \mathbf{R} \rangle^{-1} \langle \mathbf{e} \rangle\ .
+    \hat{\gamma} \equiv \langle \mathbf{R} \rangle^{-1} \langle \mathbf{e} \rangle \approx \langle \mathbf{R} \rangle^{-1} \langle \mathbf{R \gamma} \rangle.
 \end{equation*}
 
-The mean response $\langle \mathbf{R} \rangle$ is computed in standard \mcal by applying
+In standard \mcal the mean response $\langle \mathbf{R} \rangle$ is computed by applying
 small artificial shears to the observed images of objects and using a finite difference
 derivative to measure how their shapes change. Including the shape measurements where no
 shear has been applied, this process generates five shape measurements per object. These
-are the ones with no shear plus the four with $\pm\epsilon$ applied to each of the two
-axes. We typically denote these as the \noshear measurement/image, the \texttt{1p}
-measurement/image for $+\epsilon$ on the 1-axis, \texttt{1m} measurement/image for $-\epsilon$
-on the 1-axis, the \texttt{2p} measurement/image, etc. A numerical response per object
-can be constructed via
+are the one with no shear, which we denote as \texttt{noshear},
+$\pm\epsilon_1$ which we denote \texttt{1p} and \texttt{1m}, and
+$\pm\epsilon_2$ which we denote \texttt{2p} and \texttt{2m}.
+A numerical response per object can be constructed via
 \begin{equation*}
 R_{ij} \approx \frac{e_i^{+j} - e_i^{-j}}{2\epsilon}\ .
 \end{equation*}
@@ -270,7 +267,7 @@ all of the \texttt{1p} images, etc. into five separate catalogs, apply the objec
 selections to those catalogs separately, compute the average shape over those catalogs
 separately, and then finally compute the mean shear and response from those averaged
 shears. This procedure is the one described in \citet{SheldonMdet2020} for \mdet but
-applies equally well to \mcal as well. However, one can use separate shear and selection
+applies equally well to \mcal. However, one can use separate shear and selection
 responses with a single set of selections as done in \citet{SheldonMcal2017}. When
 applied to isolated objects, this technique can achieve the part-per-thousand accuracy
 required by LSST \citep{HuffMcal2017,SheldonMcal2017}.
@@ -294,7 +291,8 @@ procedure is most easily done in Fourier space where it is a simple division. Ho
 numerical instabilities can arise since one ends up dividing by small numbers at Fourier
 modes where the original PSF is nearly zero. To rectify this, one typically reconvolves
 the image with a slightly larger PSF, called the \textit{reconvolution PSF}, which
-controls these numerical instabilities by setting the affected Fourier modes to zero.
+controls these numerical instabilities by suppressing
+the affected Fourier modes.
 
 
 \subsection{Standard \mcal Revisited}
@@ -308,31 +306,35 @@ noiseless image, $G\star P + N$.
 
 In \mcal, we want an image of the object $G$, but with a small shear $\epsilon$ applied.
 A shape measurement of this image of the object will be used to compute the response
-$\mathbf{R}$ above. For now let's consider a small positive shear $\epsilon$ on one of
-the two axes. (The exact axis doesn't matter and so we will drop the typical $1,2$
+$\mathbf{R}$ above. For now let's consider a small positive shear $\epsilon$ 
+(The exact direction doesn't matter so we will drop the typical $1,2$
 subscripts.) We need to deconvolve the PSF (i.e. $I/P$) before applying this small
 shear, so we get for our image $I$
-\begin{equation*}
-Y[I/P,\epsilon]\ .
-\end{equation*}
-This process has two effects. First, the deconvolution creates excess noise in the
+\begin{equation} \label{eq:yop}
+Y[I/P,\epsilon].
+\end{equation}
+This process has two effects. First, the deconvolution amplifies the noise in the
 image. This happens since in Fourier space, where this operation is a division, $P$ is
 close to zero for Fourier modes whose wavelengths are much smaller than the size of the
-PSF. Dividing by these small numbers amplifies noise at high-frequency modes. Second, we
-actually apply the deconvolution and shearing operations to the noise in the image as
-well
+PSF. Dividing by these small numbers amplifies noise at high-frequency modes. Second,
+the amplified noise, which no longer has a flat power spectrum, is sheared, resulting
+in an anisotropic noise power spectrum, even if the original PSF were round.
+
+Note that deconvolution and shearing commute with addition, so we can write equation
+\ref{eq:yop} as
 \begin{equation*}
 Y[I/P,\epsilon] = Y[(G+N)/P,\epsilon] = Y[G/P,\epsilon] + Y[N/P,\epsilon]
 \end{equation*}
-since shearing and deconvolution operations commute with addition. To correct
-for the first effect, we convolve the image with a reconvolution PSF $P_r$ that is
+To suppress the amplified noise at high frequency modes, we convolve the image
+with a reconvolution PSF $P_r$ that is
 slightly larger than the original PSF $P$ in real-space
 \begin{equation*}
-Y[I/P,\epsilon]\star P_r = Y[G/P,\epsilon]\star P_r + Y[N/P,\epsilon]\star P_r\ ,
+Y[I/P,\epsilon]\star P_r = Y[G/P,\epsilon]\star P_r + Y[N/P,\epsilon]\star P_r\ .
 \end{equation*}
-suppressing the excess noise at high-frequency modes. To correct for the second effect,
-\citet{SheldonMcal2017} employed a technique where a noise image $N'$ with the same
-noise distribution as $N$ was put through the same process as the original image $I$
+Note after this suppression, the noise power spectrum is still not isotropic.
+To correct for this effect, \citet{SheldonMcal2017} created a compensating
+noise image $N'$, with the same
+noise distribution as $N$, and put through the same process as the original image $I$
 above but with the opposite shear
 \begin{equation*}
 Y[N'/P,-\epsilon]\star P_{r}\ .
@@ -345,7 +347,7 @@ The three terms in this equation are the sheared galaxy convolved by the reconvo
 PSF $P_r$, the sheared noise in the original image, $Y[N/P, \epsilon] \star P_r$, and
 finally the sheared noise correction needed by \mcal, $Y[N'/P, -\epsilon] \star P_r$.
 This process motivates the definition of the \mcal operator $M[I, N', P, P_r, \epsilon]$
-above that does exactly these manipulations. A similar set of manipulations generates
+in equation \ref{eq:mcalop} that does exactly these manipulations. A similar set of manipulations generates
 the \noshear and $-\epsilon$ cases. In total then, we have for the \noshear,
 $+\epsilon$, and $-\epsilon$ images
 \begin{eqnarray}
