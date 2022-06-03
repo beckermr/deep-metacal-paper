@@ -205,13 +205,14 @@ implementation of these operators for pixelated images. In practice, we rely on 
 transforms and interpolations of various kinds and orders. Our implementation is
 publicly available.\footnote{\url{https://github.com/beckermr/deep-metacal}}
 
-Finally, below we work in the limit of wide- and deep-field surveys without the common
-multi-epoch image tilling schemes in use by modern surveys. Multi-epoch surveys can be
-handled by forming postage stamp coadds around each object \citep{psc} or for \mdet,
-cell-based coadds \citep{BeckerMdet2022,SheldonMdet2022}. These data products have exact
-PSFs and known noise properties (computable via Monte Carlo). The algorithms below thus
-generalize to them easily.
-
+In what follows, we work with single images for both the wide and deep surveys.
+Modern surveys use a strategy of tiling the sky with overlapping images taken
+at different epochs.  Multi-epoch data can be handled by forming postage stamp
+coadds around each object \citep{psc} or for \mdet, by using coadds without PSF
+discontinuities \citep{BeckerMdet2022,SheldonMdet2022}. These data products
+have well defined PSFs, and the coadd noise properties can be determined by
+running pure noise images through the coaddition process. The algorithms below
+thus multi-epoch scenarios.
 
 \subsection{Standard \mcal}
 
