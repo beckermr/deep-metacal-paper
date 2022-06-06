@@ -286,7 +286,8 @@ for the response images \texttt{1p}, \texttt{1m}, etc. relative to those from th
 variety of schemes to correct for this effect, but settled on the following procedure.
 Before shape measurement under an artificial shear $\epsilon_j$, a pure noise image with
 the same noise spectrum as the original image is rotated by 90 degrees, sheared by
-$\epsilon_j$, rotated back, and then added to the sheared original image. As detailed
+$\epsilon_j$, rotated back, and then added to the sheared original image. This procedure 
+has the next effect of applying a shear of $-\epsilon_j$ to the image. As detailed
 below, this procedure cancels the biases in the shape measurements but has the net
 effect of effectively doubling the pixel noise variance in the image. It is this
 inefficiency we are seeking to rectify in this work. Second, in order to artificially
@@ -857,7 +858,7 @@ $\sqrt{\sigma_e^2/n}$ where $\sigma_e^2$ is the shape noise and $n$ is the numbe
 of sources). We find that deep-field \mcal achieves an $\approx15\%$ smaller
 error on the mean shear relative to standard \mcal.  Note that
 \citet{SheldonMcal2017} found that the increased pixel noise in standard
-\mcal resulted in an resulted in a $\approx 20\%$ degradation in the precision of
+\mcal resulted in an $\approx 20\%$ degradation in the precision of
 statistical weak lensing measurements.  Our results thus suggest that the degradation
 is reduced to a few percent with deep-field \mcal.  As our simulations do
 not contain perfect realism, we conservatively estimate the degradation for deep-field
