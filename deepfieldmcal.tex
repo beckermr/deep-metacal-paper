@@ -907,23 +907,6 @@ in order to make high-precision shear measurements, the noise distributions in t
 images must be treated carefully.
 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.45\textwidth]{sample_var.pdf}
-    \caption{
-      Sample variance scatter in the deep-field response as a function of the
-      deep-field area. The different colored lines show the estimated sample variance
-      from two different mock galaxy catalogs, \cosmodctwo and \buzzard+\descwl. The
-      dashed lines represent the expected range of requirements on the shear
-      calibration. The solid gray band shows the estimate area of LSST Deep Drilling
-      Fields. The dotted lines show extrapolations to the LSST Deep Drilling Fields
-      area assuming the sample variance scales as $1/\sqrt{\rm area}$. The LSST Deep
-      Drilling fields will be large enough to result in sample variance scatter levels
-      around 0.05\% to 0.1\%, meeting LSST requirements.
-    }
-    \label{fig:sample_variance}
-\end{figure}
-
 
 \subsection{Sample Variance}\label{sec:sv}
 
@@ -935,8 +918,8 @@ response, effectively increasing our final error on the multiplicative bias. Thi
 is most easily characterized by the fractional scatter in the deep-field response
 $\langle R_{d}\rangle$. This fractional scatter is directly comparable to our
 requirements on the knowledge of the multiplicative bias $m$. For an LSST-like survey,
-the final 10-year requirement will that the fractional scatter be less than 0.1\% to
-0.2\% \citep{huterer2006,descsrd}.
+the requirement for the final 10-year data is $m \lesssim 0.1-0.2\%$
+\citep{huterer2006,descsrd}.
 
 In order to estimate the magnitude of this effect, we have used two different structure
 formation models to compute the fractional scatter in the deep-field response as a
@@ -953,7 +936,7 @@ catalog to match the median and standard deviation of the $r-i$ and $i-z$ colors
 objects in the \descwl catalog. To generate a specific deep-field data realization, we
 first select a contiguous region of some area from the \buzzard catalog. We then find
 the closest 100 galaxies from the \descwl catalog to each galaxy in the \buzzard catalog
-in $r-i$-$i-z$ color-color space. We then select one of the 100 closest galaxies at
+in $r-i$, $i-z$ color-color space. We then select one of the 100 closest galaxies at
 random, and use it in simulating our deep-field sample for this area. This process
 imprints sample variance in the galaxy populations from \buzzard into the \descwl
 catalog. The second model is the public \cosmodctwo \citep{cosmodc2} catalog. It
@@ -975,7 +958,24 @@ somewhat different results, with \cosmodctwo consistently about 0.1\% higher tha
 \buzzard+\descwl model. For areas approaching that of the LSST DDF, we estimate a
 residual fractional scatter in the range of 0.05\% to 0.1\% assuming a DDF area of 35
 deg$^2$ and the $1/\sqrt{\rm area}$ scaling. This level of sample variance will meet or
-exceed LSST requirements.
+be less than LSST requirements.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\textwidth]{sample_var.pdf}
+    \caption{
+      Sample variance scatter in the deep-field response as a function of the
+      deep-field area. The different colored lines show the estimated sample variance
+      from two different mock galaxy catalogs, \cosmodctwo and \buzzard+\descwl. The
+      dashed lines represent the expected range of requirements on the shear
+      calibration. The solid gray band shows the estimate area of LSST Deep Drilling
+      Fields. The dotted lines show extrapolations to the LSST Deep Drilling Fields
+      area assuming the sample variance scales as $1/\sqrt{\rm area}$. The LSST Deep
+      Drilling fields will be large enough to result in sample variance scatter levels
+      around 0.05\% to 0.1\%, meeting LSST requirements.
+    }
+    \label{fig:sample_variance}
+\end{figure}
 
 We have examined the galaxy properties of the \cosmodctwo and \buzzard+\descwl samples
 in order to understand why they give different results. We find that the \cosmodctwo
@@ -984,7 +984,7 @@ distributions are largely similar. We also find that the \cosmodctwo catalog has
 slightly higher number density of objects, with $\approx65\ {\rm objects}/{\rm
 arcmin}^2$ as opposed to the \buzzard+\descwl catalogs with only $\approx50\ {\rm
 objects}/{\rm arcmin}^2$. This difference in number density does not account for the
-differences in the response sample variance scatter. Regardless of the exact nature of
+differences in the response sample variance scatter. Whatever the exact nature of
 the differences between the catalogs, our current results indicate that for a broad
 range of assumptions about the LSST DDF samples, deep-field \mcal will be an effective
 technique.
