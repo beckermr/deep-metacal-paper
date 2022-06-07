@@ -721,8 +721,8 @@ various cases. We have introduced additional complications into the process in a
 fashion in order to ensure that no biases cancel in our final results. We start with
 case 1, a simple setup using exponential galaxies with half light radius of 0.5'', a
 Gaussian PSF with FWHM 0.9'' for the wide- field images, and a Gaussian PSF with FWHM
-0.7'' for the deep-field images. \jz{Check this: The noise level is set to generate objects with a
-typical signal-to-noise of $\approx19$ for the wide-field images. That's right.} The deep-field images
+0.7'' for the deep-field images. The noise level is set to generate objects with a
+typical signal-to-noise of $\approx19$ for the wide-field images. The deep-field images
 are set to have 10$\times$ less variance than the wide-field images. We find that our
 techniques can recover the true shear correctly ($m=0.37\pm0.17$ [$10^{-3}$ $3\sigma$
 error], $c=0.09\pm1.38$ [$10^{-4}$ $3\sigma$ error]) up to second-order shear effects
@@ -858,8 +858,9 @@ than the deep-field shape measurements, generating positive biases. Similarly, w
 the extra wide-field noise applied to the deep-field image (i.e.,
 Equation~\ref{eqn:cd}), the deep-field shape measurements respond more to shear than the
 wide-field ones, generating negative biases. The two effects largely cancel, but leave
-percent-level biases in the overall shear estimate indicating that to reach
-high-precision, the noise distributions in the images must be treated carefully.
+biases that exceed LSST requirements by a factor of several. These results indicate that
+in order to make high-precision shear measurements, the noise distributions in the
+images must be treated carefully.
 
 
 \begin{figure}
