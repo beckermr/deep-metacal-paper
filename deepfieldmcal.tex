@@ -575,7 +575,7 @@ We estimate those effects in Section~\ref{sec:sv} below, demonstrating that for 
 LSST-like survey, we should not be limited by this effect.
 
 In order to actually compute a shear estimate, we propose the following processing
-algorithm.
+algorithm for calculating a mean shear for our simulations.
 \begin{enumerate}
 \item For every wide-field image
 \begin{enumerate}
@@ -590,7 +590,7 @@ algorithm.
 \item Apply the same set of selection cuts separately to each of the five catalogs from
   the last step.
 \item Use the mean shapes of each of the five catalogs separately after selection in
-  order to compute the response corrected shear via Equation~\ref{eqn:r}.
+  order to compute the response corrected shear via Equation~\ref{eqn:r} below.
 \end{enumerate}
 This procedure does a brute-force Monte Carlo integral over the
 distributions of the wide- and deep-field image properties by using the data itself as
@@ -669,7 +669,7 @@ separately produce much smaller deep-field image sets by using an algorithm wher
 each deep-field image, one selects at random a relatively small number of wide-field
 images to compute $C_{w}$. One must be careful to avoid extra noise from incomplete
 wide-field image sampling in this procedure, but this is easily tested in simulations of
-shear recovery. This change would hopefully produce smaller object catalogs for the
+shear recovery. This change would produce smaller object catalogs for the
 deep-field measurements, making downstream manipulations of the catalogs easier.
 
 Third and finally, we have made no attempt to reduce sample variance in the deep-field
@@ -684,7 +684,7 @@ appropriately weighted average of the deep-field response values. This reweighti
 procedure should cause no additional biases in the deep-field \mcal shear estimator
 while reducing the overall sample variance in the response estimate.
 
-One very nice aspect of the procedure defined here is that it naturally generalizes to
+One appealing aspect of deep-field \mcal is that it naturally generalizes to
 \mdet. In \mdet, we process whole images through the \mcal procedure, perform object
 detection, and then object shape measurement. For deep-field \mdet, we will apply the
 same set of steps above except that we draw a deep-field image at random for each
@@ -694,11 +694,12 @@ The response after object selections is computed in the same way as well. Furthe
 of the possible improvements discussed above also generalize to \mdet.
 
 We leave explicit tests of the improvements discussed above and deep-field \mdet to
-future work. Below instead we test a typical setup for \mcal where each image is a
+future work. Below we test a typical setup for standard \mcal where each image is a
 postage stamp around a wide- or deep-field galaxy, ignoring both detection and blending.
 Also, in order to separate out the effects of sample variance, for our simulations below
 we generate one deep-field image with a new galaxy chosen at random for every wide-field
-image, effectively working in the limit of unlimited deep-field data.
+image, effectively working in the limit that the wide and deep field data cover
+equal but independent areas of sky.
 
 
 \section{Results}\label{sec:results}
