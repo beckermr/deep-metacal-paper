@@ -106,9 +106,10 @@ remains to fully realize the potential of this technique in realistic survey sce
 
 Despite their success, the \mcal and \mdet techniques as currently implemented
 have a nontrivial drawback. In order to reach the required accuracy in shear
-measurement, they effectively double the pixel noise variance in the survey
-images or equivalently reduce the signal-to-noise of every source by
-approximately a factor of $1/\sqrt{2}\approx30\%$. As described below, this
+measurement, they effectively double the pixel noise variance in the survey images
+($\sqrt{2}$ in the noise standard deviation)
+or equivalently reduce the signal-to-noise of every source by
+about 30\%. As described below, this
 effect comes from a numerical correction needed to account for sheared pixel
 noise in the \mcal pipeline. This feature results in a loss of precision in the
 final cosmological analysis at the $\sim 20\%$ level \citep{SheldonMcal2017}.
@@ -253,9 +254,9 @@ are the one with no shear, which we denote as \texttt{noshear},
 $\pm\epsilon_1$ which we denote \texttt{1p} and \texttt{1m}, and
 $\pm\epsilon_2$ which we denote \texttt{2p} and \texttt{2m}.
 A numerical response per object can be constructed via
-\begin{equation*}
+\begin{equation} \label{eq:standard_R}
 R_{ij} \approx \frac{e_i^{+j} - e_i^{-j}}{2\epsilon}\ .
-\end{equation*}
+\end{equation}
 where we have denoted the shape measurement as $e_i^{\pm j}$ for the $i$th shear
 component with  with applied shear $\pm\epsilon_j$ on the $j$th axis. The responses per
 object are typically quite noisy and so the recommended estimator for the mean shear of
@@ -319,11 +320,12 @@ shear, so we get for our image $I$
 Y[I/P,\epsilon].
 \end{equation}
 This process has two effects. First, the deconvolution amplifies the noise in the
-image. This happens since in Fourier space, where this operation is a division, $P$ is
+image. This happens because in Fourier space, where this operation is a division, $P$ is
 close to zero for Fourier modes whose wavelengths are much smaller than the size of the
 PSF. Dividing by these small numbers amplifies noise at high-frequency modes. Second,
 the amplified noise, which no longer has a flat power spectrum, is sheared, resulting
-in an anisotropic noise power spectrum, even if the original PSF were round.
+in an anisotropic noise power spectrum that depends on the artificial
+shear.
 
 Note that deconvolution and shearing commute with addition, so we can write
 Equation~\ref{eq:yop} as
@@ -333,18 +335,25 @@ Y[I/P,\epsilon] = Y[(G+N)/P,\epsilon] = Y[G/P,\epsilon] + Y[N/P,\epsilon]
 To suppress the amplified noise at high frequency modes, we convolve the image
 with a reconvolution PSF $P_r$ that is
 slightly larger than the original PSF $P$ in real-space
-\begin{equation*}
+\begin{equation} \label{eq:dilate}
 Y[I/P,\epsilon]\star P_r = Y[G/P,\epsilon]\star P_r + Y[N/P,\epsilon]\star P_r\ .
-\end{equation*}
-Note after this suppression, the noise power spectrum is still not isotropic.
-To correct for this effect, \citet{SheldonMcal2017} created a compensating
+\end{equation}
+
+After this suppression, the noise power spectrum is still anisotropic, and
+affects ellipticity measurements in a way that is related to the applied
+shear.  When calculating the response from the difference of
+positive and negative shears (see Equation. \ref{eq:standard_R}), these biases
+accumulate and in turn bias the response.
+This bias is of order 10\% for low S/N galaxies \citep{SheldonMcal2017}.
+
+To correct for this effect, \citet{SheldonMcal2017} used a compensating
 noise image $N'$, with the same
 noise distribution as $N$, and put through the same process as the original image $I$
 above but with the opposite shear
 \begin{equation*}
 Y[N'/P,-\epsilon]\star P_{r}\ .
 \end{equation*}
-This image is added to our result above giving a total image
+This image is added to the result in Equation \ref{eq:dilate} giving a total image
 \begin{equation*}
 Y[G, \epsilon] \star P_r + Y[N/P, \epsilon] \star P_r + Y[N'/P, -\epsilon] \star P_r\ .
 \end{equation*}
@@ -380,7 +389,7 @@ or
 \begin{equation*}
 Y[N/P, +\epsilon] \star P_r + Y[N'/P, -\epsilon] \star P_r\ .
 \end{equation*}
-These two images have noise realized from the same underlying distribution since
+These two images have noise realized from the same underlying distribution because
 addition is commutative and terms with $+\epsilon$ are always paired with a $-\epsilon$
 term. Second, notice again that the effective noise variance has been doubled relative
 to original image since we have now added two realizations of the original noise field
@@ -392,8 +401,9 @@ above, these differences cancel, leaving the \mcal estimator unbiased.
 
 Before continuing, it is worth unpacking how the cancellation of the sheared noise
 biases happens.  Imagine an image where we have applied a noise field sheared by
-$\pm\epsilon$ but have done nothing to correct for that shearing. Then to linear order
-in the shape measurement of an object in that image we can write
+$\pm\epsilon$ but have done nothing to correct for that shearing.  We assume
+that the biases are a funtion of the applied shear, and can thus be written
+to linear order as
 \begin{equation*}
 \mathbf{e}_{\pm\epsilon} = \mathbf{e}_{\epsilon=0} \pm \epsilon b
 \end{equation*}
@@ -417,9 +427,8 @@ image as well, but between the wide- and deep-field images.
 In deep-field \mcal, our goal is to avoid the effective doubling of the variance in the
 images by taking advantage of a low-noise deep-field image set. One of course still
 needs the shape measurements from the wide-field image set for cosmological inference.
-We originally needed to double the variance to cancel biases due to the image
-manipulations used to compute the \mcal response. If we computed the \mcal response in
-the deep-field images only, then we could use the same corrections for the sheared
+If \mcal response can be computed using lower noise
+deep-field images only, then we could use the same corrections for the sheared
 noise, only doubling the effective noise of the deep-field image set. We'd then expect
 an increase in the signal-to-noise of a given source by
 $\approx\sqrt{2\sigma^2_{\rm wide}/(\sigma^2_{\rm wide} + 2\sigma^2_{\rm deep})}$.
@@ -431,26 +440,13 @@ this factor is $\approx1.30$ or about a $\approx30\%$ increase.
 
 In order to make use of this idea, we'll still need to satisfy the relationships between
 the pixel noise distributions in the \noshear and \texttt{1m}, \texttt{1p}, etc. images
-above. These properties are that the noise correlations in the images used to compute
+above. This requires that the noise correlations in the images used to compute
 the response match statistically between the positively and negatively sheared images,
 and that the noise correlations in the \noshear image should match those used for the
-response computation but with no shear applied to the image. A further constraint is
-that for \mdet, we want the deep- and wide-field images to have the same PSF in order
+response computation but with no shear applied to the image. For \mdet, there
+is a further constraint that the deep- and wide-field images have the same PSF in order
 to match the detection and blending effects between the two sets of images. We describe
 how to arrange these relationships below.
-
-\begin{figure*}
-    \centering
-    \includegraphics[width=\linewidth]{noise_corr.png}
-    \caption{
-      \textit{Left \& middle panel}: Example pure noise images from the deep- and wide-field image
-      sets after deep-field \mcal. Visually, the two noise images exhibit the same noise correlation structure.
-      \textit{Right panel}: The difference in the average pixel-pixel correlation matrix of $10^6$ deep- and
-      wide-field images $\hat I_{w,d}$. The difference is of order $10^{-5}$, indicating good numerical
-      performance of our codes.
-    } \label{fig:pixel_correlation}
-\end{figure*}
-
 
 \subsection{Deep-field \mcal}\label{sec:deepmcal}
 
@@ -541,6 +537,19 @@ We show the difference between the wide- and deep-field pixel-pixel correlation 
 in the right panel. They agree to ${\cal O}(10^{-5})$, indicating that our numerical
 implementation of this technique is working well. We find similar fractional agreement
 in the overall pixel variance as well.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=\linewidth]{noise_corr.png}
+    \caption{
+      \textit{Left \& middle panel}: Example pure noise images from the deep- and wide-field image
+      sets after deep-field \mcal. Visually, the two noise images exhibit the same noise correlation structure.
+      \textit{Right panel}: The difference in the average pixel-pixel correlation matrix of $10^6$ deep- and
+      wide-field images $\hat I_{w,d}$. The difference is of order $10^{-5}$, indicating good numerical
+      performance of our codes.
+    } \label{fig:pixel_correlation}
+\end{figure*}
+
 
 Finally, we note that while we have chosen to PSF match the images in our derivation
 above, we could have done the same derivation with $P_{r}$ replaced by $P_{r,w/d}$ for
