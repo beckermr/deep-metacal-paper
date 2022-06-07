@@ -783,26 +783,6 @@ variance since we have drawn one deep-field galaxy for every wide-field galaxy. 
 explore the effects of sample variance in Section~\ref{sec:sv} below.
 
 
-\begin{figure*}
-    \centering
-    \includegraphics[width=\textwidth]{s2n_ratio.pdf}
-    \caption{
-      \textit{Left panel}: Signal-to-noise relative to ideal of sources processed deep-field and standard \mcal
-      as a function of the ratio of deep-filed PSF FWHM to the wide-field FWHM. We assume the deep-field is
-      10$\times$ deeper for this plot. The different colored solid lines show various wide-field PSF FWHMs ranging from 0.7'' to
-      1.1'' for deep-field \mcal. The lower dashed lines of different colors show the result at the same wide-field PSF FWHM for
-      standard \mcal. The dotted line is the ideal result of one.
-      \textit{Right panel}: Signal-to-noise relative to ideal of sources processed with deep-field \mcal and standard \mcal as a function of the relative depth of the deep versus wide field. The FWHMs of the PSFs are fixed at 0.9''
-      and 0.7'' for the wide and deep images. The solid line shows deep-filed \mcal and the lower dashed line shows standard \mcal.
-      The dotted line is the ideal result of one.
-      The solid gray band shows the estimated relative depth of the LSST Deep Drilling fields.
-      Notice that in both the left and right panels, the maximum signal-to-noise for deep-field \mcal is limited to roughly 90\% of
-      the ideal case. This effect is due to the increased size of the \mcal reconvolution PSF and our use of a fixed aperture moment
-      for flux and shape measurement.}
-    \label{fig:s2n}
-\end{figure*}
-
-
 \subsection{Effectiveness as a function of Relative PSF Size and Depth}\label{sec:sizedepth}
 
 Now that we have established the accuracy of our technique, we turn our attention to the
@@ -812,7 +792,7 @@ exponential galaxies with half light radii of 0.7'' with the wide-field PSF size
 between 0.7'' and 1.1''. We take the deep-field to be a fixed $10\times$ deeper than the
 wide-field and vary the ratio of the deep-field to wide-field PSF size from 0.5 to 1.5.
 All PSFs are Gaussian. For each configuration, we measure the ideal signal-to-noise of
-our galaxy, the signal- to-noise with standard \mcal, and the signal-to-noise with
+our galaxy, the signal-to-noise with standard \mcal, and the signal-to-noise with
 deep-field \mcal.
 
 The results of this test are shown in the left panel of Figure~\ref{fig:s2n}, where we
@@ -828,6 +808,28 @@ solid lines on the left side of the plot. Notice however that even in the case w
 deep-field PSF is moderately larger than the wide- field PSF, deep-field \mcal is still
 lower noise than standard \mcal.
 
+\begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{s2n_ratio.pdf}
+    \caption{
+      \textit{Left panel}: Signal-to-noise relative to ideal of sources processed deep-field and standard \mcal
+      as a function of the ratio of deep-filed PSF FWHM to the wide-field FWHM. We assume the deep-field is
+      10$\times$ deeper for this plot. The different colored solid lines show various wide-field PSF FWHMs ranging from 0.7'' to
+      1.1'' for deep-field \mcal. The lower dashed lines of different colors show the result at the same wide-field PSF FWHM for
+      standard \mcal. The dotted line is the ideal result of one.
+      \textit{Right panel}: Signal-to-noise relative to ideal of sources processed with deep-field \mcal and standard \mcal as a function of the relative depth, or number of fixed exposure time images 
+      used in the coadd,
+      of the deep versus wide field. The FWHMs of the PSFs are fixed at 0.9''
+      and 0.7'' for the wide and deep images. The solid line shows deep-filed \mcal and the lower dashed line shows standard \mcal.
+      The dotted line is the ideal result of one.
+      The solid gray band shows the estimated relative depth of the LSST Deep Drilling fields.
+      Notice that in both the left and right panels, the maximum signal-to-noise for deep-field \mcal is limited to roughly 90\% of
+      the ideal case. This effect is due to the increased size of the \mcal reconvolution PSF and our use of a fixed aperture moment
+      for flux and shape measurement.}
+    \label{fig:s2n}
+\end{figure*}
+
+
 The final salient feature of the plot is that even if deep-field \mcal is working its
 best, we still find the signal-to-noise to be about $10\%$ lower than the ideal case,
 shown as the dotted line. This feature is due to the increased size of the reconvolution
@@ -836,10 +838,11 @@ conservative setting of the reconvolution PSF size in this work. Better techniqu
 set the reconvolution PSF size, like those employed in the Dark Energy Survey \mcal
 shear measurements \citep{desy3shear} would result in smaller losses due to this effect.
 
-Now we turn to the effects of the relative depth of the wide- and deep-field images. For
+Now we turn to the effects of the relative depth, or number of fixed exposure
+time images used in the coadd, of the wide- and deep-field images. For
 this test, we fix the sizes of the wide- and deep- field PSFs to 0.9'' and 0.7''
 respectively and vary the depth of the deep-field image from 2$\times$ deeper to
-$\sim200\times$ deeper than the wide-field image. We then again measure the
+$\sim200\times$ deeper than the wide-field image. We again measure the
 signal-to-noise in units of the ideal signal-to-noise for our test galaxy. The results
 of this computation are shown in the right panel of Figure~\ref{fig:s2n}. The dashed
 line in this panel shows the results of standard \mcal. The solid line shows the results
@@ -853,7 +856,7 @@ relative depth of the LSST Deep Drilling Fields \citep[DDF,][]{lsst-ddf-depth}. 
 the actual achieved depth of these fields is not known yet, for a broad range of
 plausible depths, deep-field \mcal will be quite effective.
 
-While the results of this section demonstrate the benefits of deep-field \mcal for
+While the results in this section demonstrate the benefits of deep-field \mcal for
 specific sources, the overall increase in the precision of a weak lensing analysis with
 deep-field \mcal depends on the exact decreases in source shape noise and increases in
 the effective number density due to the reduction in pixel noise. Further, for a survey
@@ -862,8 +865,8 @@ do not yet know the relative PSF properties of the DDFs versus the main LSST sur
 order to proceed, we make the following relatively conservative approximation. We assume
 that the subset of the DDF images with the smallest PSF sizes are used to reach a depth
 of only $10\times$ that of the main LSST survey. We then simulate objects as in case 4
-above using the \descwl package assuming but assuming the DDFs and the main LSST survey
-have the same PSF FWHM of 0.8''. We also fix the relative depth between the two and
+above using the \descwl package but forcing the DDFs and the main LSST survey
+to have the same PSF FWHM of 0.8''. We also fix the relative depth between the two and
 neglect the PSF shape variations from case 4 to reduce noise in our estimate. For each
 object, we measure its shear using standard \mcal and deep-field \mcal. We then compute
 the error on the mean shear which is dictated by the same combination shape noise and
