@@ -736,7 +736,8 @@ are $3\sigma$.
 
 We present the results of our shear recovery tests in Table~\ref{tab:shearmeas} for
 various cases. We have introduced additional complications into the process in a staged
-fashion in order to ensure that no biases cancel in our final results. We start with
+fashion in order to ensure we can identify the source of biases, even if
+they may cancel to some degree in our final results. We start with
 case 1, a simple setup using exponential galaxies with half light radius of 0.5'', a
 Gaussian PSF with FWHM 0.9'' for the wide- field images, and a Gaussian PSF with FWHM
 0.7'' for the deep-field images. The noise level is set to generate objects with a
@@ -744,7 +745,7 @@ typical signal-to-noise of $\approx19$ for the wide-field images. The deep-field
 are set to have 10$\times$ less variance than the wide-field images. We find that our
 techniques can recover the true shear correctly ($m=0.37\pm0.17$ [$10^{-3}$ $3\sigma$
 error], $c=0.09\pm1.38$ [$10^{-4}$ $3\sigma$ error]) up to second-order shear effects
-which are expected to give $m\sim{\cal O}(10^{-4})$
+which are expected to be a few parts in ten thousand
 \citep{SheldonMcal2017,SheldonMdet2020}.
 
 For case 2, we add variations in the noise levels within the wide- and deep-field
@@ -759,19 +760,19 @@ shear effects, getting $m=0.36\pm0.23$ [$10^{-3}$ $3\sigma$ error] and $c=0.63\p
 Case 3 introduces PSF size and shape variations into the previous noise variations test
 case. For this we draw the wide- field PSF FWHM from a uniform distribution between
 0.8'' and 1.0''. The deep-field PSF FWHM is drawn from a uniform distribution between
-0.6'' and 0.8''. We also randomly apply a small shear drawn uniformly between -0.02 and
-0.02 to the PSFs. This test case ensures that we are appropriately PSF matching the
+0.6'' and 0.8''. We also apply a small random shear to the PSFs, drawn uniformly
+between -0.02 and 0.02 for each component. This test case ensures that we are appropriately PSF matching the
 wide- and deep-field samples. If the PSF sizes or shapes were mismatched, we'd expect to
 see increased multiplicative and additive biases. Again we find results consistent with
 second-order shear effects, getting $m=0.30\pm0.20$ [$10^{-3}$ $3\sigma$ error] and
 $c=0.14\pm0.90$ [$10^{-4}$ $3\sigma$ error].
 
-Finally, for case 4, we introduce a population of realistic galaxies using the \descwl
-package \citep{WeakLensingDeblendingPaper,WeakLensingDeblendingSoftware}. This test case
+Finally, for case 4, we introduce a population of realistic galaxies. This test case
 serves to ensure that the statistical matching of wide- and deep-field objects and noise
 properties via the procedure in Section~\ref{sec:statmatch} is working correctly. For
 this case we use the same setup as the last simulation but replace our exponential
-galaxies with realistic bulge+disk objects from the \descwl package. We match the
+galaxies with randomly drawn bulge+disk objects from the \descwl package
+\citep{WeakLensingDeblendingPaper,WeakLensingDeblendingSoftware} . We match the
 wide-field noise level to a 10-year LSST survey, applying a uniform variation factor
 between 0.9 and 1.1 as before. The deep-field noise level is set to be 10$\times$ deeper
 and so is scaled by a factor of $1/\sqrt{10}$. The deep-field noise level is also varied
