@@ -450,30 +450,32 @@ how to arrange these relationships below.
 
 \subsection{Deep-field \mcal}\label{sec:deepmcal}
 
-In order to proceed, let's first start with a naive setup where we run \mcal on the
-deep-field images and simply match the PSF of the wide-field image to the deep-field in
-the most naive way. For the wide-field image after PSF matching to deep-field
-reconvolution PSF $P_{r,d}$ we get
-\begin{equation*}
-  \left(G\star P_{w} + N_{w}\right)/P_{w} \star P_{r,d} = G \star P_{r,d} + N_{w}/P_{w} \star P_{r,d}
-\end{equation*}
-and for the deep-field image after applying \mcal we get
+We first describe a naive setup in which \mcal is run on the deep-field images
+and only the PSF of the wide field is matched to the deep-field.  We will
+denote the wide and deep field PSFs as $P_{w/d}$ respectively, and
+the \mcal reconvolution kernel for the deep field as $P_{r,d}$, which is
+large enough to suppress excess noise from the \mcal deconvolution.
+For the deep-field image after applying \mcal we get
 \begin{eqnarray}
 M[I_{d}, N_{d}', P_{d}, P_{r,d}, \epsilon] & = & Y[G, \epsilon] \star P_{r,d} \nonumber \\
   & & + Y[N_{d}/P_{d}, \epsilon] \star P_{r,d} \nonumber \\
   & & + Y[N'_d/P_d, -\epsilon] \star P_{r,d} \nonumber\ .
 \end{eqnarray}
-Here $P_{w,d}$ are the PSFs for the wide- and deep-field images, $P_{r,w/d}$ are
-reconvolution PSFs for the wide- and deep-field images that are large enough to suppress
-excess noise from deconvolution by $P_{w,d}$, and $N_{w,d}$ are noise images with the
-wide- and deep-field noise levels. Notice that the noise in the wide-field image is
+For the wide field after matching we get
+\begin{equation*}
+  \left(G\star P_{w} + N_{w}\right)/P_{w} \star P_{r,d} = G \star P_{r,d} + N_{w}/P_{w} \star P_{r,d}
+\end{equation*}
+Notice that the noise in the wide-field image is
 $N_{w}/P_{w} \star P_{r,d}$ while the noise in the deep-field image is $Y[N_{d}/P_{d},
 \epsilon] \star P_{r,d} + Y[N'_d/P_d, -\epsilon] \star P_{r,d}$. The key idea is that
 Monte Carlo realizations of images with these noise properties are computable from only
 the knowledge of the PSFs and noise levels involved. In order to match
 the noise properties between the wide- and deep-fields, we can simply compute a Monte
 Carlo realization of the final wide-field noise and add it to the deep-field image and
-vice versa. To take care of the PSF matching, we use the larger in size of the two
+vice versa.
+
+In practice we also reconvolve the wide field data with a circular kernel $P_{r,w}$.
+Thus, for PSF matching, we must use the larger in size of the two
 reconvolution PSFs, $P_{r,w/d}$. We call this PSF $P_{r}$. A nice side effect of this
 choice for $P_{r}$ is that all of the PSF handling operations are now stable since by
 definition $P_{r}$ is big enough to suppress noise from deconvolution by either
@@ -536,7 +538,7 @@ adjacent pixels in both images, averaging over $10^6$ realizations to reduce the
 We show the difference between the wide- and deep-field pixel-pixel correlation matrices
 in the right panel. They agree to ${\cal O}(10^{-5})$, indicating that our numerical
 implementation of this technique is working well. We find similar fractional agreement
-in the overall pixel variance as well.
+in the overall pixel variance.
 
 \begin{figure*}
     \centering
