@@ -11,9 +11,9 @@
 \usepackage{lmodern}
 \usepackage{slantsc}
 
-\newcommand{\ess}[1]{\textcolor{red}{[ESS: \bf #1]}\xspace}
-\newcommand{\mrb}[1]{\textcolor{purple}{[MRB: \bf #1]}\xspace}
-\newcommand{\jz}[1]{\textcolor{blue}{[JZ: \bf #1]}\xspace}
+% \newcommand{\ess}[1]{\textcolor{red}{[ESS: \bf #1]}\xspace}
+% \newcommand{\mrb}[1]{\textcolor{purple}{[MRB: \bf #1]}\xspace}
+% \newcommand{\jz}[1]{\textcolor{blue}{[JZ: \bf #1]}\xspace}
 
 \newcommand{\mdet}{\textsc{metadetection}\@\xspace}
 \newcommand{\mcal}{\textsc{metacalibration}\@\xspace}
@@ -64,19 +64,14 @@
     point-spread function properties of the DDF and main LSST surveys, and the
     relative contribution of pixel noise versus intrinsic shape noise to the
     total shape noise in the survey. We conservatively estimate that the
-    degradation in precision is reduced from 20\% for \mcal to $<5$\% for
+    degradation in precision is reduced from 20\% for \mcal to $\lesssim5$\% for
     deep-field \mcal, which we attribute primarily to to the increased source
     density and reduced pixel noise contributions to the overall shape noise.
     Finally, we show that the technique is robust to sample variance in the
-    LSST deep fields due to their large area, with the equivalent calibration
+    LSST DDFs due to their large area, with the equivalent calibration
     error being $\lesssim0.1\%$. The deep-field \mcal technique provides higher
     signal-to-noise weak lensing measurements while still meeting the stringent
     systematic error requirements of future surveys.
-
-% We further show that for a typical lensing source,
-% deep-field \mcal will decrease \mcal image pixel noise by up to $\approx30\%$, resulting
-% in corresponding increases in the signal-to-noise of these sources and reductions in
-% measurement errors.
 
 \end{abstract}
 
@@ -149,10 +144,9 @@ increase the signal-to-noise of \mcal weak lensing sources and decreasing their 
 The exact change in the pixel noise depends in detail on the relative depth and PSF
 distributions of the wide- and deep-field surveys. We further estimate an at least
 $\approx15\%$ increase in the statistical precision of weak lensing analyses with
-Rubin LSST due to the decreased pixel noise. We conservatively estimate that the
-uncertainty in the shear estimator
-is degraded by $<5\%$ rather than the approximately 20\% degradation in
-standard \mcal.
+Rubin LSST due to the decreased pixel noise. We conservatively estimate that for
+deep-field \mcal the uncertainty in the shear estimator is degraded by $\lesssim5\%$
+rather than the approximately 20\% degradation in standard \mcal.
 
 The primary concern when utilizing only the deep-field data to compute the \mcal
 response is sample variance. The deep-field survey typically covers a much smaller
@@ -192,8 +186,6 @@ and pointwise addition or subtraction as $I_1\pm I_2$. We also define two specia
 operators on images. First, we define a shearing operator $Y[I, \gamma]$ that shears
 the image $I$ by the shear $\gamma$. Second, we define a \mcal operator,
 $M[I, N, P, P_r]$, defined as
-\ess{should we move this to the later section?}
-\mrb{IMHO, no. I added a reference to the relevant section where it is derived.}
 \begin{eqnarray} \label{eq:mcalop}
 \lefteqn{M[I, N, P, P_r, \gamma]=} & & \\\nonumber
 & &\ \ Y[I/P, \gamma] \star P_r + Y[N/P, -\gamma] \star P_r
@@ -239,7 +231,6 @@ $\langle \left. \mathbf{e} \right|_{\gamma=0} \rangle = 0$, then we get to linea
 \begin{equation*}
 \langle\mathbf{e}\rangle \approx \langle \mathbf{R} \gamma\rangle,
 \end{equation*}
-% \langle\mathbf{e}\rangle = \langle \mathbf{R} \rangle \langle\gamma\rangle
 which demonstrates that true shear is weighted by the response
 in the mean ellipticity.  We can then calculate the response weighted mean shear
 \begin{equation*}
@@ -288,17 +279,18 @@ variety of schemes to correct for this effect, but settled on the following proc
 Before shape measurement under an artificial shear $\epsilon_j$, a pure noise image with
 the same noise spectrum as the original image is rotated by 90 degrees, sheared by
 $\epsilon_j$, rotated back, and then added to the sheared original image. This procedure
-has the net effect of applying a shear of $-\epsilon_j$ to the image, but
-works even for distorted images (\ess{cite}). As detailed
-below, this procedure cancels the biases in the shape measurements but has the net
-effect of effectively doubling the pixel noise variance in the image. It is this
-inefficiency we are seeking to rectify in this work. Second, in order to artificially
-shear an image, one must first deconvolve the PSF. This procedure is most easily done in
-Fourier space where it is a simple division. However, numerical instabilities can arise
-since one ends up dividing by small numbers at Fourier modes where the original PSF is
-nearly zero. To rectify this, one typically reconvolves the image with a slightly larger
-PSF, called the \textit{reconvolution PSF}, which controls these numerical instabilities
-by suppressing the affected Fourier modes.
+has the net effect of applying a shear of $-\epsilon_j$ to the noise image, but
+works even for distorted images.\footnote{This procedure was developed as part of the
+\galsim package \citep{GALSIM2015}.} As detailed below, this procedure cancels the
+biases in the shape measurements but has the net effect of effectively doubling the
+pixel noise variance in the image. It is this inefficiency we are seeking to rectify in
+this work. Second, in order to artificially shear an image, one must first deconvolve
+the PSF. This procedure is most easily done in Fourier space where it is a simple
+division. However, numerical instabilities can arise since one ends up dividing by small
+numbers at Fourier modes where the original PSF is nearly zero. To rectify this, one
+typically reconvolves the image with a slightly larger PSF, called the
+\textit{reconvolution PSF}, which controls these numerical instabilities by suppressing
+the affected Fourier modes.
 
 
 \subsection{Standard \mcal Revisited}\label{sec:mcalagain}
@@ -427,7 +419,7 @@ image as well, but between the wide- and deep-field images.
 In deep-field \mcal, our goal is to avoid the effective doubling of the variance in the
 images by taking advantage of a low-noise deep-field image set. One of course still
 needs the shape measurements from the wide-field image set for cosmological inference.
-If \mcal response can be computed using lower noise
+If the \mcal response can be computed using lower noise
 deep-field images only, then we could use the same corrections for the sheared
 noise, only doubling the effective noise of the deep-field image set. We'd then expect
 an increase in the signal-to-noise of a given source by
@@ -474,12 +466,16 @@ the noise properties between the wide- and deep-fields, we can simply compute a 
 Carlo realization of the final wide-field noise and add it to the deep-field image and
 vice versa.
 
-In practice we also reconvolve the wide field data with a circular kernel $P_{r,w}$.
-Thus, for PSF matching, we must use the larger in size of the two
+In practice, the wide-field PSF FWHM can be bigger than the deep-field PSF FWHM.
+In this case, we cannot match the PSF of the wide-field data to the deep-field data
+without amplifying noise at high-frequency modes. We also want a circular PSF in the
+wide-field data in order to remove additive biases. The wide-field reconvolution PSF
+$P_{r,w}$ will suppress noise from deconvolutions by $P_{w}$ and is circular.
+Thus, for PSF matching, we use the larger in size of the two
 reconvolution PSFs, $P_{r,w/d}$. We call this PSF $P_{r}$. With this
 choice for $P_{r}$, all of the PSF handling operations are now stable since by
 definition $P_{r}$ is big enough to suppress noise from deconvolution by either
-$P_{r,w}$ or $P_{r,d}$.
+$P_{w}$ or $P_{d}$.
 
 In detail then, we define the following wide- and deep-field correction images
 \begin{equation}\label{eqn:cw}
@@ -698,8 +694,8 @@ future work. Below we test a typical setup for standard \mcal where each image i
 postage stamp around a wide- or deep-field galaxy, ignoring both detection and blending.
 Also, in order to separate out the effects of sample variance, for our simulations below
 we generate one deep-field image with a new galaxy chosen at random for every wide-field
-image, effectively working in the limit that the wide and deep field data cover
-equal but independent areas of sky.
+image, effectively working in the limit that the wide- and deep-field data cover
+equal but independent areas of the sky.
 
 
 \section{Results}\label{sec:results}
@@ -875,11 +871,12 @@ $\sqrt{\sigma_e^2/n}$ where $\sigma_e^2$ is the shape noise and $n$ is the numbe
 of sources). We find that deep-field \mcal achieves an $\approx15\%$ smaller
 error on the mean shear relative to standard \mcal.  Note that
 \citet{SheldonMcal2017} found that the increased pixel noise in standard
-\mcal resulted in an $\approx 20\%$ degradation in the precision of
-statistical weak lensing measurements.  Our results thus suggest that the degradation
+\mcal resulted in an $\approx 20\%$ overall degradation in the precision of
+statistical weak lensing measurements relative to an ideal case with no increased pixel
+noise.  Our results thus suggest that the degradation
 is reduced to a few percent with deep-field \mcal.  As our simulations do
 not contain perfect realism, we conservatively estimate the degradation for deep-field
-\mcal is $<5\%$.  In more realistic scenarios, we may be able to use more of the DDF
+\mcal is $\lesssim5\%$.  In more realistic scenarios, we may be able to use more of the DDF
 data resulting in better performance. We defer more detailed estimates to future work.
 
 \subsection{Relative Importance of Different Correction Terms}\label{sec:terms}
@@ -1005,9 +1002,10 @@ conclusions are:
     the wide- and deep-field depth and PSF distributions (Section~\ref{sec:sizedepth}).
   \item When applied to the Rubin LSST, we expect an at least $\approx15\%$ increase in
     the precision of weak lensing analyses due to the decreased pixel noise contributions
-    to the shape noise and increased effective source density.  We conservatively
+    to the shape noise and increased effective source density. We conservatively
     estimate that the corresponding degradation in the precision of statistical
-    shear measurements is reduced from 20\% for \mcal to $<5\%$ for deep-field \mcal.
+    shear measurements relative to an ideal case of no extra pixel noise
+    is reduced from 20\% for standard \mcal to $\lesssim5\%$ for deep-field \mcal.
   \item The LSST DDFs will have enough area to suppress the effects of sample variance
     in the deep-fields to levels that will meet LSST requirements
     (Section~\ref{sec:sv}).
@@ -1033,10 +1031,6 @@ their full potential.
 In future work, we will pursue the above improvements, perform explicit tests
 of deep-field \mdet for LSST-like surveys, and develop an implementation of
 deep-field \mdet for Rubin LSST data.
-
-% The techniques presented in this work
-% are promising but require detailed and systematic testing in order to be fully
-% ready for next-generation weak lensing surveys.
 
 \section*{Acknowledgments}
 
