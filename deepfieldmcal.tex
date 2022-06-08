@@ -617,46 +617,6 @@ similar, relatively narrow PSF distributions. Given that deep-field \mcal is sti
 effective even if the deep-field PSF is marginally bigger than the wide-field PSF, this
 alternative matching procedure may only supply marginal gains.
 
-\begin{table*}
-  \centering
-  \begin{threeparttable}
-  \caption{Shear Calibration Results for Deep-field \mcal}
-  \label{tab:shearmeas}
-
-  \begin{tabular}{cccccc}
-    \hline
-    \noalign{\vskip 1mm}
-    case & noise\tnote{a} & PSF\tnote{b} & galaxy\tnote{c} & m [$10^{-3}$ $3\sigma$ error] & c [$10^{-4}$ $3\sigma$ error]\\
-    \noalign{\vskip 1mm}
-    \hline
-    \noalign{\vskip 1mm}
-    1 & fixed    & fixed    & exponential & $0.37 \pm 0.17$ & $\phantom{-}0.09\pm1.38$  \\
-    2 & variable & fixed    & exponential & $0.36\pm0.23$   & $\phantom{-}0.63\pm1.77$ \\
-    3 & variable & variable & exponential & $0.30\pm0.20$   & $\phantom{-}0.14\pm0.90$  \\
-    4 & variable & variable & \descwl     & $0.57\pm0.39$   & $-0.13\pm0.64$  \\
-    \noalign{\vskip 1mm}
-    \hline
-  \end{tabular}
-
-  \begin{tablenotes}
-  \item [a] All simulations use a deep-field depth that is on average $10\times$ deeper
-    than the wide-field depth. \textit{fixed} noise uses a fixed noise level for the
-    wide- and deep-field images, such that the deep-field noise level is a factor of
-    $1/\sqrt{10}$ lower than the wide-field noise level. \textit{variable} noise
-    applies an additional uniform random factor between 0.9 and 1.1 to the noise levels
-    of the both the wide- and deep-field images.
-  \item [b] The \textit{fixed} PSF model assumes the wide- and deep-field PSFs are both
-    Gaussian with FWHMs of 0.9'' and 0.7'' respectively. The \textit{variable} PSF
-    model assumes the wide- and deep-field PSFs are both Gaussian with FWHMs drawn from
-    uniform distributions between 0.8'' to 1.0'' and 0.6'' to 0.8'' respectively.
-  \item [c] The exponential galaxy model is an object with an exponential profile with
-    half-light radius of 0.5''. The \descwl model draws bulge+disk objects to match an
-    LSST-like survey using the \descwl package
-    \citep{WeakLensingDeblendingPaper,WeakLensingDeblendingSoftware}.
-  \end{tablenotes}
-  \end{threeparttable}
-\end{table*}
-
 Second, the procedure defined above produces one deep-field image for every wide-field
 one. In practice, since the deep-field survey is smaller in area than the wide-field
 survey, this will mean much of the deep-field data is duplicated (but with different
@@ -743,6 +703,46 @@ techniques can recover the true shear correctly ($m=0.37\pm0.17$ [$10^{-3}$ $3\s
 error], $c=0.09\pm1.38$ [$10^{-4}$ $3\sigma$ error]) up to second-order shear effects
 which are expected to be a few parts in ten thousand
 \citep{SheldonMcal2017,SheldonMdet2020}.
+
+\begin{table*}
+  \centering
+  \begin{threeparttable}
+  \caption{Shear Calibration Results for Deep-field \mcal}
+  \label{tab:shearmeas}
+
+  \begin{tabular}{cccccc}
+    \hline
+    \noalign{\vskip 1mm}
+    case & noise\tnote{a} & PSF\tnote{b} & galaxy\tnote{c} & m [$10^{-3}$ $3\sigma$ error] & c [$10^{-4}$ $3\sigma$ error]\\
+    \noalign{\vskip 1mm}
+    \hline
+    \noalign{\vskip 1mm}
+    1 & fixed    & fixed    & exponential & $0.37 \pm 0.17$ & $\phantom{-}0.09\pm1.38$  \\
+    2 & variable & fixed    & exponential & $0.36\pm0.23$   & $\phantom{-}0.63\pm1.77$ \\
+    3 & variable & variable & exponential & $0.30\pm0.20$   & $\phantom{-}0.14\pm0.90$  \\
+    4 & variable & variable & \descwl     & $0.57\pm0.39$   & $-0.13\pm0.64$  \\
+    \noalign{\vskip 1mm}
+    \hline
+  \end{tabular}
+
+  \begin{tablenotes}
+  \item [a] All simulations use a deep-field depth that is on average $10\times$ deeper
+    than the wide-field depth. \textit{fixed} noise uses a fixed noise level for the
+    wide- and deep-field images, such that the deep-field noise level is a factor of
+    $1/\sqrt{10}$ lower than the wide-field noise level. \textit{variable} noise
+    applies an additional uniform random factor between 0.9 and 1.1 to the noise levels
+    of the both the wide- and deep-field images.
+  \item [b] The \textit{fixed} PSF model assumes the wide- and deep-field PSFs are both
+    Gaussian with FWHMs of 0.9'' and 0.7'' respectively. The \textit{variable} PSF
+    model assumes the wide- and deep-field PSFs are both Gaussian with FWHMs drawn from
+    uniform distributions between 0.8'' to 1.0'' and 0.6'' to 0.8'' respectively.
+  \item [c] The exponential galaxy model is an object with an exponential profile with
+    half-light radius of 0.5''. The \descwl model draws bulge+disk objects to match an
+    LSST-like survey using the \descwl package
+    \citep{WeakLensingDeblendingPaper,WeakLensingDeblendingSoftware}.
+  \end{tablenotes}
+  \end{threeparttable}
+\end{table*}
 
 For case 2, we add variations in the noise levels within the wide- and deep-field
 samples. For this test case, we use the same setup as the previous test case, but scale
