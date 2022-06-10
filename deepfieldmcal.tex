@@ -203,7 +203,7 @@ transforms and interpolations of various kinds and orders. Our implementation is
 publicly available.\footnote{\url{https://github.com/beckermr/deep-metacal}}
 
 In what follows, we work with single images for both the wide and deep surveys.
-Modern surveys use a strategy of tiling the sky with overlapping images taken
+Modern surveys use a strategy of covering an area of the sky with overlapping images taken
 at different epochs.  Multi-epoch data can be handled by forming postage stamp
 coadds around each object \citep{psc} or for \mdet, by using coadds without PSF
 discontinuities \citep{BeckerMdet2022,SheldonMdet2022}. These data products
@@ -234,13 +234,13 @@ $\langle \left. \mathbf{e} \right|_{\gamma=0} \rangle = 0$, then we get to linea
 \end{equation*}
 which demonstrates that true shear is weighted by the response
 in the mean ellipticity.  We can then calculate the response weighted mean shear
-\begin{equation*}
+\begin{equation} \label{eq:meanshear}
     \hat{\gamma} \equiv \langle \mathbf{R} \rangle^{-1} \langle \mathbf{e} \rangle \approx \langle \mathbf{R} \rangle^{-1} \langle \mathbf{R \gamma} \rangle.
-\end{equation*}
+\end{equation}
 
 In standard \mcal the mean response $\langle \mathbf{R} \rangle$ is computed by applying
 small artificial shears to the observed images of objects and using a finite difference
-derivative to measure how their shapes change. Including the shape measurements where no
+derivative to measure how their shapes respond to the change. Including the shape measurements where no
 shear has been applied, this process generates five shape measurements per object. These
 are the one with no shear, which we denote as \texttt{noshear},
 $\pm\epsilon_1$ which we denote \texttt{1p} and \texttt{1m}, and
@@ -263,7 +263,8 @@ all of the \texttt{1p} images, etc. into five separate catalogs, apply the objec
 selections to those catalogs separately, compute the average shape over those catalogs
 separately, and then finally compute the mean shear and response from those averaged
 shears. This procedure is the one described in \citet{SheldonMdet2020} for \mdet but
-applies equally well to \mcal. However, one can use separate shear and selection
+applies equally well to \mcal. However, for standard \mcal, when using a fixed
+catalog, one can use separate shear and selection
 responses with a single set of selections as done in \citet{SheldonMcal2017}. When
 applied to isolated objects, this technique can achieve the part-per-thousand accuracy
 required by LSST \citep{HuffMcal2017,SheldonMcal2017}.
@@ -272,10 +273,12 @@ The numerical implementation of standard \mcal has two key features which are re
 to the discussion of deep-field \mcal below. First, as discussed in
 \citet{SheldonMcal2017}, one must correct for the effects of sheared background noise
 when estimating the response to shear via finite differencing. When applying an
-artificial shear to a noisy image, the sheared background noise becomes correlated
-across adjacent pixels. This effect, if left uncorrected, biases the shape measurements
+artificial shear to a noisy image, the image is deconvolved and sheared,
+which produces an image with an anisotropic noise power spectrum.
+This effect, if left uncorrected, biases the shape measurements
 for the response images \texttt{1p}, \texttt{1m}, etc. relative to those from the
-\noshear images, producing a biased shear estimator. \citet{SheldonMcal2017} tried a
+\noshear images, producing a biased shear estimator (see Equation \ref{eq:meanshear}).
+\citet{SheldonMcal2017} tried a
 variety of schemes to correct for this effect, but settled on the following procedure.
 Before shape measurement under an artificial shear $\epsilon_j$, a pure noise image with
 the same noise spectrum as the original image is rotated by 90 degrees, sheared by
@@ -283,9 +286,11 @@ $\epsilon_j$, rotated back, and then added to the sheared original image. This p
 has the net effect of applying a shear of $-\epsilon_j$ to the noise image, but
 works even for distorted images.\footnote{This procedure was developed as part of the
 \galsim package \citep{GALSIM2015}.} As detailed below, this procedure cancels the
-biases in the shape measurements but has the net effect of effectively doubling the
+biases in the shape measurements but has the net effect of doubling the
 pixel noise variance in the image. It is this inefficiency we are seeking to rectify in
-this work. Second, in order to artificially shear an image, one must first deconvolve
+this work.
+
+Second, in order to artificially shear an image, one must first deconvolve
 the PSF. This procedure is most easily done in Fourier space where it is a simple
 division. However, numerical instabilities can arise since one ends up dividing by small
 numbers at Fourier modes where the original PSF is nearly zero. To rectify this, one
@@ -294,21 +299,21 @@ typically reconvolves the image with a slightly larger PSF, called the
 the affected Fourier modes.
 
 
-\subsection{Standard \mcal Revisited}\label{sec:mcalagain}
+\subsection{Standard Metacalibration Revisited}\label{sec:mcalagain}
 
 In order to gain insight into the deep-field \mcal algorithms below, let's consider the
 standard \mcal algorithm in our notation. For this, let's denote the galaxy as $G$, the
 PSF as $P$, our noise field as $N$, and the \mcal reconvolution PSF as $P_r$. In this
-notation, the observed image of an object is $I = G\star P + N$. That is, we convolve
-the galaxy $G$ with the PSF $P$, $G\star P$, and then get a noisy realization of the
-noiseless image, $G\star P + N$.
+notation, the observed image of an object is $I = G\star P + N$. That is, the image
+is of the galaxy $G$ is convolved by a PSF $P$, $G\star P$, and has additional noise
+giving $G\star P + N$.
 
-In \mcal, we want an image of the object $G$, but with a small shear $\epsilon$ applied.
+In \mcal, we wish to produce an image of the object $G$ with a small shear $\epsilon$ applied.
 A shape measurement of this image of the object will be used to compute the response
 $\mathbf{R}$ above. For now let's consider a small positive shear $\epsilon$
 (The exact direction doesn't matter so we will drop the typical $1,2$
 subscripts.) We need to deconvolve the PSF (i.e. $I/P$) before applying this small
-shear, so we get for our image $I$
+shear, so we get
 \begin{equation} \label{eq:yop}
 Y[I/P,\epsilon].
 \end{equation}
@@ -333,7 +338,7 @@ Y[I/P,\epsilon]\star P_r = Y[G/P,\epsilon]\star P_r + Y[N/P,\epsilon]\star P_r\ 
 \end{equation}
 
 After this suppression, the noise power spectrum is still anisotropic, and
-affects ellipticity measurements in a way that is related to the applied
+this noise affects ellipticity measurements in a way that is related to the applied
 shear.  When calculating the response from the difference of
 positive and negative shears (see Equation. \ref{eq:standard_R}), these biases
 accumulate and in turn bias the response.
@@ -366,7 +371,7 @@ $+\epsilon$, and $-\epsilon$ images
     & &=Y[G, -\epsilon] \star P_r + Y[N/P, -\epsilon] \star P_r + Y[N'/P, +\epsilon] \star P_r \nonumber\ .
 \end{eqnarray}
 
-There are a few key features to notice in the various images above. First, notice that
+We would like to draw attention to a few key features in the various images above. First, notice that
 the $+\epsilon$ image and the $-\epsilon$ have statistically identical noise
 distributions due to the matched set of opposite signs on the terms like
 $Y[N/P,\pm\epsilon] \star P_r$. The set of operations in the terms
