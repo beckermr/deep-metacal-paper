@@ -13,7 +13,7 @@
 
 % \newcommand{\ess}[1]{\textcolor{red}{[ESS: \bf #1]}\xspace}
 % \newcommand{\mrb}[1]{\textcolor{purple}{[MRB: \bf #1]}\xspace}
-% \newcommand{\jz}[1]{\textcolor{blue}{[JZ: \bf #1]}\xspace}
+\newcommand{\jz}[1]{\textcolor{blue}{[JZ: \bf #1]}\xspace}
 
 \newcommand{\mdet}{\textsc{metadetection}\@\xspace}
 \newcommand{\mcal}{\textsc{metacalibration}\@\xspace}
@@ -698,10 +698,10 @@ case 1, a simple setup using exponential galaxies with half light radius of 0.5'
 Gaussian PSF with FWHM 0.9'' for the wide- field images, and a Gaussian PSF with FWHM
 0.7'' for the deep-field images. The noise level is set to generate objects with a
 typical signal-to-noise of $\approx19$ for the wide-field images. The deep-field images
-are set to have 10$\times$ less variance than the wide-field images. 
-\jz{discussion on image dim:} Both the wide and 
-deep field images are generated on a $53\times53$ images with pixel size set to 0.2". 
-This particular choice of pixel size is expected to reflect that of LSST surveys.  
+are set to have 10$\times$ less variance than the wide-field images.
+\jz{discussion on image dim:} Both the wide and
+deep field images are generated on a $53\times53$ images with pixel size set to 0.2".
+This particular choice of pixel size is expected to reflect that of LSST surveys.
 \jz{check the unit for pixel size and reference?}. We find that our
 techniques can recover the true shear correctly ($m=0.37\pm0.17$ [$10^{-3}$ $3\sigma$
 error], $c=0.09\pm1.38$ [$10^{-4}$ $3\sigma$ error]) up to second-order shear effects
@@ -777,9 +777,9 @@ wide-field noise level to a 10-year LSST survey, applying a uniform variation fa
 between 0.9 and 1.1 as before. The deep-field noise level is set to be 10$\times$ deeper
 and so is scaled by a factor of $1/\sqrt{10}$. The deep-field noise level is also varied
 uniformly by a factor between 0.9 and 1.1. \jz{discussion on image dim:} Unlike the previous cases, we simulate the deep
-and wide images using $73\times73$ pixels, with pixel size at 0.2" unchanged. The increased 
+and wide images using $73\times73$ pixels, with pixel size at 0.2" unchanged. The increased
 image dimension is due to the varying sizes of galaxies in the \descwl catalog. A larger image
-is needed to fully contain those galaxies with larger angular sizes. We again find results consistent 
+is needed to fully contain those galaxies with larger angular sizes. We again find results consistent
 with second-order shear effects, with $m=0.57\pm0.39$ [$10^{-3}$ $3\sigma$ error] and
 $c=-0.13\pm0.64$ [$10^{-4}$ $3\sigma$ error]. This test neglects the effects of sample
 variance since we have drawn one deep-field galaxy for every wide-field galaxy. We will
@@ -793,9 +793,9 @@ expected gains in realistic survey scenarios where the relative sizes of the PSF
 relative depths of the wide- and deep-field will vary. For this setup, we simulate
 exponential galaxies with half light radii of 0.7'' with the wide-field PSF size varying
 between 0.7'' and 1.1''. We take the deep-field to be a fixed $10\times$ deeper than the
-wide-field and vary the ratio of the deep-field to wide-field PSF size from 0.5 to 1.5. 
-All PSFs are Gaussian. 
-\jz{(I.e., except for the PSF sizes, all setups are identical to those of case 1 in 
+wide-field and vary the ratio of the deep-field to wide-field PSF size from 0.5 to 1.5.
+All PSFs are Gaussian.
+\jz{(I.e., except for the PSF sizes, all setups are identical to those of case 1 in
 Section~\ref{sec:mc}.)}
 For each configuration, we measure the ideal signal-to-noise of
 our galaxy, the signal-to-noise with standard \mcal, and the signal-to-noise with
@@ -848,7 +848,7 @@ Now we turn to the effects of the relative depth, or number of fixed exposure
 time images used in the coadd, of the wide- and deep-field images. For
 this test, we fix the sizes of the wide- and deep- field PSFs to 0.9'' and 0.7''
 respectively and vary the depth of the deep-field image from 2$\times$ deeper to
-$\sim200\times$ deeper than the wide-field image. \jz{(I.e., the setups are identical to 
+$\sim200\times$ deeper than the wide-field image. \jz{(I.e., the setups are identical to
 those in case 1 of Section~\ref{sec:mc} except for deep noise level.)} We again measure the
 signal-to-noise in units of the ideal signal-to-noise for our test galaxy. The results
 of this computation are shown in the right panel of Figure~\ref{fig:s2n}. The dashed
@@ -957,7 +957,7 @@ For both models, we simulate the deep-field samples assuming the deep-field data
 10$\times$ deeper than the wide-field data. Due to the fact that the wide-field noise is
 applied to the deep-fields, we cut the input simulation catalogs keeping only objects
 brighter than $r$-band of $26$. For this specific test, we fix the PSF FWHM to 0.7'' for
-both the wide- and deep-field images. \jz{All images are simulated on $73\times73$ pixels 
+both the wide- and deep-field images. \jz{All images are simulated on $73\times73$ pixels
 with size 0.2"} With this setup, we compute the fractional scatter
 in the shear response for a variety of assumed deep-field areas, ranging from 1 deg$^2$
 to 8 deg$^2$. The results of this computation are shown in
