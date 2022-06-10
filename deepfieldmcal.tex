@@ -80,12 +80,12 @@
 \section{Introduction}\label{sec:intro}
 
 Modern surveys that aim to measure weak lensing signals will constrain a wealth of
-fundamental physics, but must meet stringent requirements on the control of systematic
+fundamental physics, but in order to do so they must meet stringent requirements on the control of systematic
 effects (see, e.g., \citeauthor{MandelbaumReview}~\citeyear{MandelbaumReview} for a
 review). One of the most daunting issues has been accurately measuring weak
 gravitational lensing shears from survey data. For the Vera C. Rubin Observatory Legacy
-Survey of Space and Time (LSST), these signals must be measured to about one part per
-thousand in order to not dominate the overall error budget and degrade cosmological
+Survey of Space and Time (LSST), these signals must be measured with systematic
+errors no worse than about one part per thousand to avoid degrading cosmological
 constraints \citep{huterer2006,descsrd}. A large number of systematic effects and
 measurement biases must be overcome to reach this goal, including correcting for the
 point-spread function (PSF), noise biases, model biases, selection effects, blending
@@ -108,7 +108,7 @@ or equivalently reduce the signal-to-noise of every source by
 about 30\%. As described below, this
 effect comes from a numerical correction needed to account for sheared pixel
 noise in the \mcal pipeline. This feature results in a loss of precision in the
-final cosmological analysis at the $\sim 20\%$ level \citep{SheldonMcal2017}.
+statistical shear measurements at the $\sim 20\%$ level \citep{SheldonMcal2017}.
 
 Interestingly, modern surveys typically have a wide-field imaging campaign, which forms
 the survey used for weak lensing shear measurements, and a deep-field imaging campaign,
@@ -125,8 +125,8 @@ deep-field survey to derive calibrations. The standard \mcal estimator for
 a mean shear has two
 components, the uncalibrated shape measurements $\langle \mathbf{g} \rangle$ and the
 mean \mcal response matrix $\langle\mathbf{R}\rangle$, both of which are computed from
-the wide-field survey data. These quantities are combined to form the final shear
-estimate as
+the wide-field survey data. For a mean shear, these quantities are combined to
+form the final shear estimate as
 \citep{HuffMcal2017,SheldonMcal2017}
 \begin{equation*}
 \hat\gamma \equiv \langle\mathbf{R}\rangle^{-1}\langle \mathbf{g} \rangle\ .
