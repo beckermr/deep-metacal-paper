@@ -793,8 +793,11 @@ expected gains in realistic survey scenarios where the relative sizes of the PSF
 relative depths of the wide- and deep-field will vary. For this setup, we simulate
 exponential galaxies with half light radii of 0.7'' with the wide-field PSF size varying
 between 0.7'' and 1.1''. We take the deep-field to be a fixed $10\times$ deeper than the
-wide-field and vary the ratio of the deep-field to wide-field PSF size from 0.5 to 1.5.
-All PSFs are Gaussian. For each configuration, we measure the ideal signal-to-noise of
+wide-field and vary the ratio of the deep-field to wide-field PSF size from 0.5 to 1.5. 
+All PSFs are Gaussian. 
+\jz{(I.e., except for the PSF sizes, all setups are identical to those of case 1 in 
+Section~\ref{sec:mc}.)}
+For each configuration, we measure the ideal signal-to-noise of
 our galaxy, the signal-to-noise with standard \mcal, and the signal-to-noise with
 deep-field \mcal.
 
@@ -845,7 +848,8 @@ Now we turn to the effects of the relative depth, or number of fixed exposure
 time images used in the coadd, of the wide- and deep-field images. For
 this test, we fix the sizes of the wide- and deep- field PSFs to 0.9'' and 0.7''
 respectively and vary the depth of the deep-field image from 2$\times$ deeper to
-$\sim200\times$ deeper than the wide-field image. We again measure the
+$\sim200\times$ deeper than the wide-field image. \jz{(I.e., the setups are identical to 
+those in case 1 of Section~\ref{sec:mc} except for deep noise level.)} We again measure the
 signal-to-noise in units of the ideal signal-to-noise for our test galaxy. The results
 of this computation are shown in the right panel of Figure~\ref{fig:s2n}. The dashed
 line in this panel shows the results of standard \mcal. The solid line shows the results
@@ -953,7 +957,8 @@ For both models, we simulate the deep-field samples assuming the deep-field data
 10$\times$ deeper than the wide-field data. Due to the fact that the wide-field noise is
 applied to the deep-fields, we cut the input simulation catalogs keeping only objects
 brighter than $r$-band of $26$. For this specific test, we fix the PSF FWHM to 0.7'' for
-both the wide- and deep-field images. With this setup, we compute the fractional scatter
+both the wide- and deep-field images. \jz{All images are simulated on $73\times73$ pixels 
+with size 0.2"} With this setup, we compute the fractional scatter
 in the shear response for a variety of assumed deep-field areas, ranging from 1 deg$^2$
 to 8 deg$^2$. The results of this computation are shown in
 Figure~\ref{fig:sample_variance}. We find that the fractional scatter decreases
