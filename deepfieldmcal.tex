@@ -776,10 +776,9 @@ galaxies with randomly drawn bulge+disk objects from the \descwl package
 wide-field noise level to a 10-year LSST survey, applying a uniform variation factor
 between 0.9 and 1.1 as before. The deep-field noise level is set to be 10$\times$ deeper
 and so is scaled by a factor of $1/\sqrt{10}$. The deep-field noise level is also varied
-uniformly by a factor between 0.9 and 1.1. \jz{discussion on image dim:} Unlike the previous cases, we simulate the deep
-and wide images using $73\times73$ pixels, with pixel size at 0.2" unchanged. The increased 
-image dimension is due to the varying sizes of galaxies in the \descwl catalog. A larger image
-is needed to fully contain those galaxies with larger angular sizes. We again find results consistent 
+uniformly by a factor between 0.9 and 1.1. 
+Unlike the previous cases, we simulate the deep-
+and wide-field images using $73\times73$ postage stamps with the same 0.2" pixel scale. The increased image dimension allows for the larger objects in the \descwl catalog. We again find results consistent 
 with second-order shear effects, with $m=0.57\pm0.39$ [$10^{-3}$ $3\sigma$ error] and
 $c=-0.13\pm0.64$ [$10^{-4}$ $3\sigma$ error]. This test neglects the effects of sample
 variance since we have drawn one deep-field galaxy for every wide-field galaxy. We will
