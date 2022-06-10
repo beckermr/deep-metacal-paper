@@ -571,10 +571,10 @@ statistically for \mcal, it has not addressed how to apply this technique to a r
 survey where there will be variations in the noise, PSF, and galaxy properties between
 the wide- and deep-field image sets. In particular, we will not have a deep-field image
 of every wide-field object. Thus in an actual survey, we will instead rely on the fact
-that the deep-field images have a statistically representative set of objects for the
-wide-field. The most obvious way in which this assumption is invalid is sample variance.
-We estimate those effects in Section~\ref{sec:sv} below, demonstrating that for a Rubin
-LSST-like survey, we should not be limited by this effect.
+that the objects in the deep-field images are statistically representative of the
+objects in the wide-field. The most obvious way in which this assumption is invalid is sample variance.
+We estimate those effects in Section~\ref{sec:sv} below, demonstrating that a Rubin
+LSST-like survey should not be limited by sample variance.
 
 In order to actually compute a shear estimate, we propose the following processing
 algorithm for calculating a mean shear for our simulations.
@@ -647,8 +647,11 @@ procedure should cause no additional biases in the deep-field \mcal shear estima
 while reducing the overall sample variance in the response estimate.
 
 One appealing aspect of deep-field \mcal is that it naturally generalizes to
-\mdet. In \mdet, we process whole images through the \mcal procedure, perform object
-detection, and then object shape measurement. For deep-field \mdet, we will apply the
+\mdet. In \mdet, we process larger images through the \mcal procedure, not
+just postage stamps, and perform both object
+detection and object shape measurement separately for all \mcal sheared
+and unsheared images.
+For deep-field \mdet, we will apply the
 same set of steps above except that we draw a deep-field image at random for each
 wide-field image and detect objects in each of the $\hat I_{w,d}$ images before shape
 measurement. The measured object shapes are accumulated into catalogs in the same way.
@@ -658,7 +661,7 @@ of the possible improvements discussed above also generalize to \mdet.
 We leave explicit tests of the improvements discussed above and deep-field \mdet to
 future work. Below we test a typical setup for standard \mcal where each image is a
 postage stamp around a wide- or deep-field galaxy, ignoring both detection and blending.
-Also, in order to separate out the effects of sample variance, for our simulations below
+Also, in order to separate out the effects of sample variance from our main results,
 we generate one deep-field image with a new galaxy chosen at random for every wide-field
 image, effectively working in the limit that the wide- and deep-field data cover
 equal but independent areas of the sky.
