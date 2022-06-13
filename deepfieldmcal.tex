@@ -13,7 +13,7 @@
 
 % \newcommand{\ess}[1]{\textcolor{red}{[ESS: \bf #1]}\xspace}
 % \newcommand{\mrb}[1]{\textcolor{purple}{[MRB: \bf #1]}\xspace}
-% \newcommand{\jz}[1]{\textcolor{blue}{[JZ: \bf #1]}\xspace}
+\newcommand{\jz}[1]{\textcolor{blue}{[JZ: \bf #1]}\xspace}
 
 \newcommand{\mdet}{\textsc{metadetection}\@\xspace}
 \newcommand{\mcal}{\textsc{metacalibration}\@\xspace}
@@ -45,12 +45,13 @@
 
     We introduce \textit{deep-field \textsc{metacalibration}}, a new technique
     that reduces the pixel noise in \mcal estimators of weak lensing shear
-    signals by taking advantage of a smaller, deeper imaging survey for
+    signals by using a deeper imaging survey for
     calibration. In standard \mcal, a small artificial shear is applied to the
-    observed images of galaxies in order to estimate the response of the
-    object's shape to shear, which is used to calibrate the shear estimates.
-    As part of a correction for the effect of shearing the noise, extra noise
-    is added to the images that increases the uncertainty on statistical shear
+    observed images of galaxies in order to estimate the response the
+    object's shape measurement to shear, which is used to calibrate statistical
+    shear estimates.  As part of a correction for the effect of shearing correlated noise
+    in the image, extra noise
+    is added that increases the uncertainty on statistical shear
     estimates by $\sim 20$\%.  Our new deep-field \mcal technique leverages a
     separate, deeper imaging survey to calculate calibrations with less
     degradation in image noise.  We demonstrate that weak lensing shear
@@ -79,12 +80,12 @@
 \section{Introduction}\label{sec:intro}
 
 Modern surveys that aim to measure weak lensing signals will constrain a wealth of
-fundamental physics, but must meet stringent requirements on the control of systematic
+fundamental physics, but in order to do so they must meet stringent requirements on the control of systematic
 effects (see, e.g., \citeauthor{MandelbaumReview}~\citeyear{MandelbaumReview} for a
 review). One of the most daunting issues has been accurately measuring weak
 gravitational lensing shears from survey data. For the Vera C. Rubin Observatory Legacy
-Survey of Space and Time (LSST), these signals must be measured to about one part per
-thousand in order to not dominate the overall error budget and degrade cosmological
+Survey of Space and Time (LSST), these signals must be measured with systematic
+errors no worse than about one part per thousand to avoid degrading cosmological
 constraints \citep{huterer2006,descsrd}. A large number of systematic effects and
 measurement biases must be overcome to reach this goal, including correcting for the
 point-spread function (PSF), noise biases, model biases, selection effects, blending
@@ -107,7 +108,7 @@ or equivalently reduce the signal-to-noise of every source by
 about 30\%. As described below, this
 effect comes from a numerical correction needed to account for sheared pixel
 noise in the \mcal pipeline. This feature results in a loss of precision in the
-final cosmological analysis at the $\sim 20\%$ level \citep{SheldonMcal2017}.
+statistical shear measurements at the $\sim 20\%$ level \citep{SheldonMcal2017}.
 
 Interestingly, modern surveys typically have a wide-field imaging campaign, which forms
 the survey used for weak lensing shear measurements, and a deep-field imaging campaign,
@@ -124,8 +125,8 @@ deep-field survey to derive calibrations. The standard \mcal estimator for
 a mean shear has two
 components, the uncalibrated shape measurements $\langle \mathbf{g} \rangle$ and the
 mean \mcal response matrix $\langle\mathbf{R}\rangle$, both of which are computed from
-the wide-field survey data. These quantities are combined to form the final shear
-estimate as
+the wide-field survey data. For a mean shear, these quantities are combined to
+form the final shear estimate as
 \citep{HuffMcal2017,SheldonMcal2017}
 \begin{equation*}
 \hat\gamma \equiv \langle\mathbf{R}\rangle^{-1}\langle \mathbf{g} \rangle\ .
@@ -202,7 +203,7 @@ transforms and interpolations of various kinds and orders. Our implementation is
 publicly available.\footnote{\url{https://github.com/beckermr/deep-metacal}}
 
 In what follows, we work with single images for both the wide and deep surveys.
-Modern surveys use a strategy of tiling the sky with overlapping images taken
+Modern surveys use a strategy of covering an area of the sky with overlapping images taken
 at different epochs.  Multi-epoch data can be handled by forming postage stamp
 coadds around each object \citep{psc} or for \mdet, by using coadds without PSF
 discontinuities \citep{BeckerMdet2022,SheldonMdet2022}. These data products
@@ -233,13 +234,13 @@ $\langle \left. \mathbf{e} \right|_{\gamma=0} \rangle = 0$, then we get to linea
 \end{equation*}
 which demonstrates that true shear is weighted by the response
 in the mean ellipticity.  We can then calculate the response weighted mean shear
-\begin{equation*}
+\begin{equation} \label{eq:meanshear}
     \hat{\gamma} \equiv \langle \mathbf{R} \rangle^{-1} \langle \mathbf{e} \rangle \approx \langle \mathbf{R} \rangle^{-1} \langle \mathbf{R \gamma} \rangle.
-\end{equation*}
+\end{equation}
 
 In standard \mcal the mean response $\langle \mathbf{R} \rangle$ is computed by applying
 small artificial shears to the observed images of objects and using a finite difference
-derivative to measure how their shapes change. Including the shape measurements where no
+derivative to measure how their shapes respond to the change. Including the shape measurements where no
 shear has been applied, this process generates five shape measurements per object. These
 are the one with no shear, which we denote as \texttt{noshear},
 $\pm\epsilon_1$ which we denote \texttt{1p} and \texttt{1m}, and
@@ -262,7 +263,8 @@ all of the \texttt{1p} images, etc. into five separate catalogs, apply the objec
 selections to those catalogs separately, compute the average shape over those catalogs
 separately, and then finally compute the mean shear and response from those averaged
 shears. This procedure is the one described in \citet{SheldonMdet2020} for \mdet but
-applies equally well to \mcal. However, one can use separate shear and selection
+applies equally well to \mcal. However, for standard \mcal, when using a fixed
+catalog, one can use separate shear and selection
 responses with a single set of selections as done in \citet{SheldonMcal2017}. When
 applied to isolated objects, this technique can achieve the part-per-thousand accuracy
 required by LSST \citep{HuffMcal2017,SheldonMcal2017}.
@@ -271,10 +273,12 @@ The numerical implementation of standard \mcal has two key features which are re
 to the discussion of deep-field \mcal below. First, as discussed in
 \citet{SheldonMcal2017}, one must correct for the effects of sheared background noise
 when estimating the response to shear via finite differencing. When applying an
-artificial shear to a noisy image, the sheared background noise becomes correlated
-across adjacent pixels. This effect, if left uncorrected, biases the shape measurements
+artificial shear to a noisy image, the image is deconvolved and sheared,
+which produces an image with an anisotropic noise power spectrum.
+This effect, if left uncorrected, biases the shape measurements
 for the response images \texttt{1p}, \texttt{1m}, etc. relative to those from the
-\noshear images, producing a biased shear estimator. \citet{SheldonMcal2017} tried a
+\noshear images, producing a biased shear estimator (see Equation \ref{eq:meanshear}).
+\citet{SheldonMcal2017} tried a
 variety of schemes to correct for this effect, but settled on the following procedure.
 Before shape measurement under an artificial shear $\epsilon_j$, a pure noise image with
 the same noise spectrum as the original image is rotated by 90 degrees, sheared by
@@ -282,9 +286,11 @@ $\epsilon_j$, rotated back, and then added to the sheared original image. This p
 has the net effect of applying a shear of $-\epsilon_j$ to the noise image, but
 works even for distorted images.\footnote{This procedure was developed as part of the
 \galsim package \citep{GALSIM2015}.} As detailed below, this procedure cancels the
-biases in the shape measurements but has the net effect of effectively doubling the
+biases in the shape measurements but has the net effect of doubling the
 pixel noise variance in the image. It is this inefficiency we are seeking to rectify in
-this work. Second, in order to artificially shear an image, one must first deconvolve
+this work.
+
+Second, in order to artificially shear an image, one must first deconvolve
 the PSF. This procedure is most easily done in Fourier space where it is a simple
 division. However, numerical instabilities can arise since one ends up dividing by small
 numbers at Fourier modes where the original PSF is nearly zero. To rectify this, one
@@ -293,21 +299,21 @@ typically reconvolves the image with a slightly larger PSF, called the
 the affected Fourier modes.
 
 
-\subsection{Standard \mcal Revisited}\label{sec:mcalagain}
+\subsection{Standard Metacalibration Revisited}\label{sec:mcalagain}
 
 In order to gain insight into the deep-field \mcal algorithms below, let's consider the
 standard \mcal algorithm in our notation. For this, let's denote the galaxy as $G$, the
 PSF as $P$, our noise field as $N$, and the \mcal reconvolution PSF as $P_r$. In this
-notation, the observed image of an object is $I = G\star P + N$. That is, we convolve
-the galaxy $G$ with the PSF $P$, $G\star P$, and then get a noisy realization of the
-noiseless image, $G\star P + N$.
+notation, the observed image of an object is $I = G\star P + N$. That is, the image
+of the galaxy $G$ is convolved by a PSF $P$ giving $G\star P$, and has additional noise
+which results in $G\star P + N$.
 
-In \mcal, we want an image of the object $G$, but with a small shear $\epsilon$ applied.
+In \mcal, we wish to produce an image of the object $G$ with a small shear $\epsilon$ applied.
 A shape measurement of this image of the object will be used to compute the response
 $\mathbf{R}$ above. For now let's consider a small positive shear $\epsilon$
 (The exact direction doesn't matter so we will drop the typical $1,2$
 subscripts.) We need to deconvolve the PSF (i.e. $I/P$) before applying this small
-shear, so we get for our image $I$
+shear, so we get
 \begin{equation} \label{eq:yop}
 Y[I/P,\epsilon].
 \end{equation}
@@ -332,7 +338,7 @@ Y[I/P,\epsilon]\star P_r = Y[G/P,\epsilon]\star P_r + Y[N/P,\epsilon]\star P_r\ 
 \end{equation}
 
 After this suppression, the noise power spectrum is still anisotropic, and
-affects ellipticity measurements in a way that is related to the applied
+this noise affects ellipticity measurements in a way that is related to the applied
 shear.  When calculating the response from the difference of
 positive and negative shears (see Equation. \ref{eq:standard_R}), these biases
 accumulate and in turn bias the response.
@@ -365,7 +371,7 @@ $+\epsilon$, and $-\epsilon$ images
     & &=Y[G, -\epsilon] \star P_r + Y[N/P, -\epsilon] \star P_r + Y[N'/P, +\epsilon] \star P_r \nonumber\ .
 \end{eqnarray}
 
-There are a few key features to notice in the various images above. First, notice that
+We would like to draw attention to a few key features in the various images above. First, notice that
 the $+\epsilon$ image and the $-\epsilon$ have statistically identical noise
 distributions due to the matched set of opposite signs on the terms like
 $Y[N/P,\pm\epsilon] \star P_r$. The set of operations in the terms
@@ -565,10 +571,10 @@ statistically for \mcal, it has not addressed how to apply this technique to a r
 survey where there will be variations in the noise, PSF, and galaxy properties between
 the wide- and deep-field image sets. In particular, we will not have a deep-field image
 of every wide-field object. Thus in an actual survey, we will instead rely on the fact
-that the deep-field images have a statistically representative set of objects for the
-wide-field. The most obvious way in which this assumption is invalid is sample variance.
-We estimate those effects in Section~\ref{sec:sv} below, demonstrating that for a Rubin
-LSST-like survey, we should not be limited by this effect.
+that the objects in the deep-field images are statistically representative of the
+objects in the wide-field. The most obvious way in which this assumption is invalid is sample variance.
+We estimate those effects in Section~\ref{sec:sv} below, demonstrating that a Rubin
+LSST-like survey should not be limited by sample variance.
 
 In order to actually compute a shear estimate, we propose the following processing
 algorithm for calculating a mean shear for our simulations.
@@ -641,8 +647,11 @@ procedure should cause no additional biases in the deep-field \mcal shear estima
 while reducing the overall sample variance in the response estimate.
 
 One appealing aspect of deep-field \mcal is that it naturally generalizes to
-\mdet. In \mdet, we process whole images through the \mcal procedure, perform object
-detection, and then object shape measurement. For deep-field \mdet, we will apply the
+\mdet. In \mdet, we process larger images through the \mcal procedure, not
+just postage stamps, and perform both object
+detection and object shape measurement separately for all \mcal sheared
+and unsheared images.
+For deep-field \mdet, we will apply the
 same set of steps above except that we draw a deep-field image at random for each
 wide-field image and detect objects in each of the $\hat I_{w,d}$ images before shape
 measurement. The measured object shapes are accumulated into catalogs in the same way.
@@ -652,7 +661,7 @@ of the possible improvements discussed above also generalize to \mdet.
 We leave explicit tests of the improvements discussed above and deep-field \mdet to
 future work. Below we test a typical setup for standard \mcal where each image is a
 postage stamp around a wide- or deep-field galaxy, ignoring both detection and blending.
-Also, in order to separate out the effects of sample variance, for our simulations below
+Also, in order to separate out the effects of sample variance from our main results,
 we generate one deep-field image with a new galaxy chosen at random for every wide-field
 image, effectively working in the limit that the wide- and deep-field data cover
 equal but independent areas of the sky.
@@ -662,7 +671,7 @@ equal but independent areas of the sky.
 
 In this section we present our main results. These include tests of shear recovery
 (Section~\ref{sec:mc}, Table~\ref{tab:shearmeas}) and estimates for how effective the
-technique is as a function of the relative depth and PSF sizes of the wide- and
+technique is at reducing noise as a function of the relative depth and PSF sizes of the wide- and
 deep-field images (Section~\ref{sec:sizedepth}, Figure~\ref{fig:s2n}). We discuss the
 relative importance of the various correction images used by deep-field \mcal in
 Section~\ref{sec:terms}. We conclude by estimating the effects of sample variance on our
@@ -673,7 +682,7 @@ estimator using two complementary simulated models of galaxy populations
 \subsection{Shear Recovery}\label{sec:mc}
 
 In order to test shear recvovery, we simulate objects in postage stamps using the
-\galsim package. The wide- and deep-field objects are drawn from the same distributions
+\galsim package. The wide- and deep-field objects parameters are drawn from the same distributions
 and we work in the limit of an unlimited amount of deep-field data in order to reduce
 the noise and test the intrinsic accuracy of our methods. We further use the techniques
 from \citet{pujol2019} to cancel the pixel-noise in the simulations by generating pairs
@@ -698,13 +707,13 @@ case 1, a simple setup using exponential galaxies with half light radius of 0.5'
 Gaussian PSF with FWHM 0.9'' for the wide- field images, and a Gaussian PSF with FWHM
 0.7'' for the deep-field images. The noise level is set to generate objects with a
 typical signal-to-noise of $\approx19$ for the wide-field images. The deep-field images
-are set to have 10$\times$ less variance than the wide-field images. 
-\jz{discussion on image dim:} Both the wide and 
-deep field images are generated on a $53\times53$ images with pixel size set to 0.2". 
-This particular choice of pixel size is expected to reflect that of LSST surveys.  
-\jz{check the unit for pixel size and reference?}. We find that our
-techniques can recover the true shear correctly ($m=0.37\pm0.17$ [$10^{-3}$ $3\sigma$
-error], $c=0.09\pm1.38$ [$10^{-4}$ $3\sigma$ error]) up to second-order shear effects
+are set to have 10$\times$ less noise variance than the wide-field images ($\sqrt{10}$
+smaller standard deviation).
+Both the wide- and
+deep-field images are $53\times53$ postage stamps with a 0.2" pixel scale.
+We find that our
+techniques can recover the true shear correctly ($m=0.37\pm0.17$ [$10^{-3}$, $3\sigma$
+error], $c=0.09\pm1.38$ [$10^{-4}$, $3\sigma$ error]) up to second-order shear effects
 which are expected to be a few parts in ten thousand
 \citep{SheldonMcal2017,SheldonMdet2020}.
 
@@ -717,7 +726,7 @@ which are expected to be a few parts in ten thousand
   \begin{tabular}{cccccc}
     \hline
     \noalign{\vskip 1mm}
-    case & noise\tnote{a} & PSF\tnote{b} & galaxy\tnote{c} & m [$10^{-3}$ $3\sigma$ error] & c [$10^{-4}$ $3\sigma$ error]\\
+    case & noise\tnote{a} & PSF\tnote{b} & galaxy\tnote{c} & m [$10^{-3}$, $3\sigma$ error] & c [$10^{-4}$, $3\sigma$ error]\\
     \noalign{\vskip 1mm}
     \hline
     \noalign{\vskip 1mm}
@@ -754,8 +763,8 @@ the wide- and deep-field noise levels by a random uniform draw between 0.9 and 1
 additional test case serves to ensure that we are correctly matching the image noise
 properties with our technique. If we did not match the noise properties precisely, we'd
 expect to see biases in our results. We again find results consistent with second- order
-shear effects, getting $m=0.36\pm0.23$ [$10^{-3}$ $3\sigma$ error] and $c=-0.63\pm1.77$
-[$10^{-4}$ $3\sigma$ error].
+shear effects, getting $m=0.36\pm0.23$ [$10^{-3}$, $3\sigma$ error] and $c=-0.63\pm1.77$
+[$10^{-4}$, $3\sigma$ error].
 
 Case 3 introduces PSF size and shape variations into the previous noise variations test
 case. For this we draw the wide- field PSF FWHM from a uniform distribution between
@@ -764,8 +773,8 @@ case. For this we draw the wide- field PSF FWHM from a uniform distribution betw
 between -0.02 and 0.02 for each component. This test case ensures that we are appropriately PSF matching the
 wide- and deep-field samples. If the PSF sizes or shapes were mismatched, we'd expect to
 see increased multiplicative and additive biases. Again we find results consistent with
-second-order shear effects, getting $m=0.30\pm0.20$ [$10^{-3}$ $3\sigma$ error] and
-$c=0.14\pm0.90$ [$10^{-4}$ $3\sigma$ error].
+second-order shear effects, getting $m=0.30\pm0.20$ [$10^{-3}$, $3\sigma$ error] and
+$c=0.14\pm0.90$ [$10^{-4}$, $3\sigma$ error].
 
 Finally, for case 4, we introduce a population of realistic galaxies. This test case
 serves to ensure that the statistical matching of wide- and deep-field objects and noise
@@ -776,27 +785,27 @@ galaxies with randomly drawn bulge+disk objects from the \descwl package
 wide-field noise level to a 10-year LSST survey, applying a uniform variation factor
 between 0.9 and 1.1 as before. The deep-field noise level is set to be 10$\times$ deeper
 and so is scaled by a factor of $1/\sqrt{10}$. The deep-field noise level is also varied
-uniformly by a factor between 0.9 and 1.1. \jz{discussion on image dim:} Unlike the previous cases, we simulate the deep
-and wide images using $73\times73$ pixels, with pixel size at 0.2" unchanged. The increased 
-image dimension is due to the varying sizes of galaxies in the \descwl catalog. A larger image
-is needed to fully contain those galaxies with larger angular sizes. We again find results consistent 
-with second-order shear effects, with $m=0.57\pm0.39$ [$10^{-3}$ $3\sigma$ error] and
-$c=-0.13\pm0.64$ [$10^{-4}$ $3\sigma$ error]. This test neglects the effects of sample
+uniformly by a factor between 0.9 and 1.1.
+Unlike the previous cases, we simulate the deep-
+and wide-field images using $73\times73$ postage stamps with the same 0.2" pixel scale. The increased image dimension allows for the larger objects in the \descwl catalog. We again find results consistent
+with second-order shear effects, with $m=0.57\pm0.39$ [$10^{-3}$, $3\sigma$ error] and
+$c=-0.13\pm0.64$ [$10^{-4}$, $3\sigma$ error]. This test neglects the effects of sample
 variance since we have drawn one deep-field galaxy for every wide-field galaxy. We will
 explore the effects of sample variance in Section~\ref{sec:sv} below.
 
 
 \subsection{Effectiveness as a function of Relative PSF Size and Depth}\label{sec:sizedepth}
 
-Now that we have established the accuracy of our technique, we turn our attention to the
-expected gains in realistic survey scenarios where the relative sizes of the PSFs and
-relative depths of the wide- and deep-field will vary. For this setup, we simulate
+Now that we have established the accuracy of our technique, we turn our
+attention to the expected gains in realistic survey scenarios where deep field
+can have larger PSFs than the wide field, and when the relative depths of the
+wide- and deep-fields vary.
+
+We first show results for the PSF variation.  For this setup, we simulate
 exponential galaxies with half light radii of 0.7'' with the wide-field PSF size varying
 between 0.7'' and 1.1''. We take the deep-field to be a fixed $10\times$ deeper than the
-wide-field and vary the ratio of the deep-field to wide-field PSF size from 0.5 to 1.5. 
-All PSFs are Gaussian. 
-\jz{(I.e., except for the PSF sizes, all setups are identical to those of case 1 in 
-Section~\ref{sec:mc}.)}
+wide-field and vary the ratio of the deep-field to wide-field PSF size from 0.5 to 1.5.
+The rest of the simulation parameters follow case 1 above in Section~\ref{sec:mc}.
 For each configuration, we measure the ideal signal-to-noise of
 our galaxy, the signal-to-noise with standard \mcal, and the signal-to-noise with
 deep-field \mcal.
@@ -812,7 +821,10 @@ we see substantial gains in the signal-to-noise. This gain matches our expectati
 the math above, $\sqrt{2/(1 + 2/10)}\approx1.3$, or about 30\% between the dashed and
 solid lines on the left side of the plot. Notice however that even in the case where the
 deep-field PSF is moderately larger than the wide- field PSF, deep-field \mcal is still
-lower noise than standard \mcal.
+lower noise than standard \mcal. The average increase in signal-to-noise per object
+will result in weak lensing samples from deep-field \mcal that extend to higher redshift
+than those from standard \mcal. We leave estimating the amplitude and significance of
+this effect to future work.
 
 \begin{figure*}
     \centering
@@ -830,7 +842,7 @@ lower noise than standard \mcal.
       The dotted line is the ideal result of one.
       The solid gray band shows the estimated relative depth of the LSST Deep Drilling fields.
       Notice that in both the left and right panels, the maximum signal-to-noise for deep-field \mcal is limited to roughly 90\% of
-      the ideal case. This effect is due to the increased size of the \mcal reconvolution PSF and our use of a fixed aperture moment
+      the ideal case. This effect is partly due to the increased size of the \mcal reconvolution PSF and our use of a fixed aperture moment
       for flux and shape measurement.}
     \label{fig:s2n}
 \end{figure*}
@@ -838,7 +850,7 @@ lower noise than standard \mcal.
 
 The final salient feature of the plot is that even if deep-field \mcal is working its
 best, we still find the signal-to-noise to be about $10\%$ lower than the ideal case,
-shown as the dotted line. This feature is due to the increased size of the reconvolution
+shown as the dotted line. This feature is partly due to the increased size of the reconvolution
 PSF used in the deep-field \mcal image manipulations. We have used a relatively
 conservative setting of the reconvolution PSF size in this work. Better techniques to
 set the reconvolution PSF size, like those employed in the Dark Energy Survey \mcal
@@ -848,8 +860,8 @@ Now we turn to the effects of the relative depth, or number of fixed exposure
 time images used in the coadd, of the wide- and deep-field images. For
 this test, we fix the sizes of the wide- and deep- field PSFs to 0.9'' and 0.7''
 respectively and vary the depth of the deep-field image from 2$\times$ deeper to
-$\sim200\times$ deeper than the wide-field image. \jz{(I.e., the setups are identical to 
-those in case 1 of Section~\ref{sec:mc} except for deep noise level.)} We again measure the
+$\sim200\times$ deeper than the wide-field image. The rest of the simulation
+parameters follow case 1 from Section~\ref{sec:mc}. We again measure the
 signal-to-noise in units of the ideal signal-to-noise for our test galaxy. The results
 of this computation are shown in the right panel of Figure~\ref{fig:s2n}. The dashed
 line in this panel shows the results of standard \mcal. The solid line shows the results
@@ -861,7 +873,7 @@ technique becomes more effective. Again we see an overall loss of $\sim10\%$ in
 signal-to-noise due to the reconvolution PSF. In the gray band, we show the estimated
 relative depth of the LSST Deep Drilling Fields \citep[DDF,][]{lsst-ddf-depth}. While
 the actual achieved depth of these fields is not known yet, for a broad range of
-plausible depths, deep-field \mcal will be quite effective.
+plausible depths, deep-field \mcal will be quite effective at reducing noise.
 
 While the results in this section demonstrate the benefits of deep-field \mcal for
 specific sources, the overall increase in the precision of a weak lensing analysis with
@@ -898,10 +910,10 @@ remove one or both of these terms before computing the mean shear. For this case
 match the PSFs of the wide- and deep-fields, keeping them both at 0.8''. We also use
 sources with signal-to-noise of $\approx12$ to accentuate the effects of differing noise
 on the shear calibration. We find that without the wide-field image correction term, the
-shear recovery is biased with $m=37.2\pm8.1$ [$10^{-3}$ $3\sigma$ error]. Similarly
+shear recovery is biased with $m=37.2\pm8.1$ [$10^{-3}$, $3\sigma$ error]. Similarly
 without the deep-field image correction term, we again find that the shear recovery is biased
-with $m=-43.5\pm2.2$ [$10^{-3}$ $3\sigma$ error]. Finally without either term, we find
-$m=-6.1\pm2.2$ [$10^{-3}$ $3\sigma$ error], indicating some degree of cancellation in
+with $m=-43.5\pm2.2$ [$10^{-3}$, $3\sigma$ error]. Finally without either term, we find
+$m=-6.1\pm2.2$ [$10^{-3}$, $3\sigma$ error], indicating some degree of cancellation in
 the various effects at play. The differing signs in the biases reflect changes in the
 response to shear of the numerator of the deep-field \mcal estimator versus the
 denominator. When removing the extra deep-field noise applied to the wide-field image
@@ -957,8 +969,8 @@ For both models, we simulate the deep-field samples assuming the deep-field data
 10$\times$ deeper than the wide-field data. Due to the fact that the wide-field noise is
 applied to the deep-fields, we cut the input simulation catalogs keeping only objects
 brighter than $r$-band of $26$. For this specific test, we fix the PSF FWHM to 0.7'' for
-both the wide- and deep-field images. \jz{All images are simulated on $73\times73$ pixels 
-with size 0.2"} With this setup, we compute the fractional scatter
+both the wide- and deep-field images. All images are $73\times73$ pixel postage stamps
+with a 0.2'' pixel scale. With this setup, we compute the fractional scatter
 in the shear response for a variety of assumed deep-field areas, ranging from 1 deg$^2$
 to 8 deg$^2$. The results of this computation are shown in
 Figure~\ref{fig:sample_variance}. We find that the fractional scatter decreases
@@ -984,6 +996,7 @@ be less than LSST requirements.
       around 0.05\% to 0.1\%, meeting LSST requirements.
     }
     \label{fig:sample_variance}
+    \vspace{1em}
 \end{figure}
 
 We have examined the galaxy properties of the \cosmodctwo and \buzzard+\descwl samples
